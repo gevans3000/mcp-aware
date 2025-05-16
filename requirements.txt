@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+python-multipart
+python-dotenv
+transformers
+torch
+gradio
+requests
+openai>=1.0.0            # optional remote backend
