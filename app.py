@@ -266,38 +266,59 @@ def chat_fn(message: str, history: List[Tuple[str, str]]) -> str:
     return response
 
 # Create and launch the interface
+def find_available_port(start_port: int = 7861, max_attempts: int = 10) -> int:
+    """Find an available port starting from the specified port."""
+    import socket
+    from contextlib import closing
+    
+    for port in range(start_port, start_port + max_attempts):
+        try:
+            with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as sock:
+                sock.bind(('', port))
+                return port
+        except OSError:
+            continue
+    raise OSError(f"No available port found in range {start_port}-{start_port + max_attempts - 1}")
+
 def main() -> None:
     """
     Main function to initialize and run the MCP Chatbot.
     
     This function sets up the Gradio interface, tests the MCP server connection,
-    and launches the chat application.
+    and launches the chat application on an available port.
     """
-    logger.info("Starting MCP Chatbot...")
-    logger.info(f"MCP Server URL: {MCP_GREETING_ENDPOINT.replace('/greeting/Test', '')}")
-    logger.info(f"Visit http://{SERVER_HOST}:{SERVER_PORT} to chat")
-    
-    # Test the server connection
+    # Find an available port
     try:
-        logger.info("Testing connection to MCP server...")
-        response = requests.get(MCP_GREETING_ENDPOINT, timeout=5)
-        logger.info(f"Server test successful: {response.status_code} - {response.text}")
-    except requests.exceptions.RequestException as e:
-        logger.warning(f"Could not connect to MCP server: {str(e)}")
-        logger.warning("Please make sure server.py is running in another terminal")
-    
-    # Create and launch the interface
-    with gr.Blocks() as demo:
-        backend_selector = gr.Dropdown(
-            choices=["openai", "local"],
-            value=chat_backend,
-            label="Choose Chat Backend"
-        )
-        backend_selector.change(fn=set_backend, inputs=backend_selector, outputs=None)
-        gr.ChatInterface(chat_fn, title="MCP Chatbot")
-    
-    # Launch the interface
-    demo.launch(server_name=SERVER_HOST, server_port=SERVER_PORT)
+        port = find_available_port()
+        logger.info("Starting MCP Chatbot...")
+        logger.info(f"MCP Server URL: {MCP_GREETING_ENDPOINT.replace('/greeting/Test', '')}")
+        logger.info(f"Visit http://{SERVER_HOST}:{port} to chat")
+        
+        # Test the server connection
+        try:
+            logger.info("Testing connection to MCP server...")
+            response = requests.get(MCP_GREETING_ENDPOINT, timeout=5)
+            logger.info(f"Server test successful: {response.status_code} - {response.text}")
+        except requests.exceptions.RequestException as e:
+            logger.warning(f"Could not connect to MCP server: {str(e)}")
+            logger.warning("Please make sure server.py is running in another terminal")
+        
+        # Create the interface
+        with gr.Blocks() as demo:
+            backend_selector = gr.Dropdown(
+                choices=["openai", "local"],
+                value=chat_backend,
+                label="Choose Chat Backend"
+            )
+            backend_selector.change(fn=set_backend, inputs=backend_selector, outputs=None)
+            gr.ChatInterface(chat_fn, title="MCP Chatbot")
+        
+        # Launch the interface
+        demo.launch(server_name=SERVER_HOST, server_port=port, show_error=True)
+        
+    except Exception as e:
+        logger.error(f"Failed to start application: {e}")
+        raise
 
 if __name__ == "__main__":
     main()

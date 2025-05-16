@@ -1,0 +1,57 @@
+2025-05-16 12:42:48,548 - app - INFO - User message: Hello
+2025-05-16 12:42:48,549 - app - INFO - Bot response: Hello! I'm your MCP Chatbot. I can help with simple calculations. Try asking me to add two numbers!
+2025-05-16 12:42:48,549 - app - INFO - User message: Hi again
+2025-05-16 12:42:48,550 - app - INFO - Bot response: Hello! I'm your MCP Chatbot. I can help with simple calculations. Try asking me to add two numbers!
+2025-05-16 12:42:48,551 - app - INFO - User message: Another message
+2025-05-16 12:42:48,551 - app - INFO - Bot response: I'm a simple chatbot that can help with basic math. Try asking me to add two numbers!
+2025-05-16 13:06:39,629 - app - INFO - Switched to local backend
+2025-05-16 13:06:39,630 - app - INFO - User message: Hi
+2025-05-16 13:06:39,630 - app - INFO - Bot response: Hello! I'm your MCP Chatbot. I can help with simple calculations. Try asking me to add two numbers!
+2025-05-16 13:06:39,630 - app - INFO - Switched to openai backend
+2025-05-16 13:06:39,631 - app - INFO - User message: Hi
+2025-05-16 13:06:41,655 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-16 13:06:41,661 - app - INFO - Bot response: Hello! How can I assist you today?
+2025-05-16 13:17:03,920 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 13:17:03,920 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 13:17:03,920 - __main__ - INFO - Visit http://0.0.0.0:7860 to chat
+2025-05-16 13:17:03,920 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 13:17:05,991 - __main__ - INFO - Server test successful: 200 - {"result":"Hello, Test! Nice to meet you."}
+2025-05-16 13:17:06,724 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 13:17:06,728 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 13:20:35,637 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 13:20:35,637 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 13:20:35,637 - __main__ - INFO - Visit http://0.0.0.0:7860 to chat
+2025-05-16 13:20:35,639 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 13:20:37,686 - __main__ - INFO - Server test successful: 200 - {"result":"Hello, Test! Nice to meet you."}
+2025-05-16 13:20:38,440 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 13:20:38,441 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 13:27:20,672 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 13:27:20,672 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 13:27:20,672 - __main__ - INFO - Visit http://0.0.0.0:7861 to chat
+2025-05-16 13:27:20,672 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 13:27:22,748 - __main__ - INFO - Server test successful: 200 - {"result":"Hello, Test! Nice to meet you."}
+2025-05-16 13:27:23,444 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 13:27:23,444 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 13:27:25,346 - httpx - INFO - HTTP Request: GET http://localhost:7861/gradio_api/startup-events "HTTP/1.1 200 OK"
+2025-05-16 13:27:27,415 - httpx - INFO - HTTP Request: HEAD http://localhost:7861/ "HTTP/1.1 200 OK"
+2025-05-16 13:29:16,951 - __main__ - INFO - User message: ok test
+2025-05-16 13:29:16,952 - __main__ - INFO - Bot response: I'm a simple chatbot that can help with basic math. Try asking me to add two numbers!
+2025-05-16 13:29:21,398 - __main__ - INFO - Switched to openai backend
+2025-05-16 13:29:26,976 - __main__ - INFO - User message: what are boyu are you good?
+2025-05-16 13:29:27,616 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-16 13:29:27,621 - __main__ - INFO - Bot response: I'm a computer program designed to assist with basic tasks and provide information. How can I help you today?
+2025-05-16 13:51:46,853 - __main__ - INFO - User message: hello
+2025-05-16 13:51:47,672 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-16 13:51:47,673 - __main__ - INFO - Bot response: Hello! How can I assist you today?
+2025-05-16 13:51:51,766 - __main__ - INFO - User message: what are you good at?
+2025-05-16 13:51:52,472 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-16 13:51:52,479 - __main__ - INFO - Bot response: I am good at providing information, answering questions, offering suggestions, and helping with a wide range of topics. Feel free to ask me anything you'd like assistance with!
+2025-05-16 13:51:55,901 - __main__ - INFO - Switched to openai backend
+2025-05-16 13:52:11,284 - __main__ - INFO - User message: what are you good at? and what is your model? and what is the hardest prompt you encountered?
+2025-05-16 13:52:12,595 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-16 13:52:12,598 - __main__ - INFO - Bot response: I am a language model AI trained to assist users with a variety of tasks such as answering questions, providing information, and engaging in conversations. My model is based on cutting-edge natural language processing technology.
+
+As for the hardest prompt I have encountered, it's difficult to pinpoint a specific example as my training data covers a broad range of topics and scenarios. However, I am continually learning and improving to better assist users with their queries. Feel free to ask me anything you'd like help with!
+2025-05-16 13:52:37,053 - __main__ - INFO - Switched to local backend
+2025-05-16 13:52:40,719 - __main__ - INFO - User message: and you?
+2025-05-16 13:52:40,721 - __main__ - INFO - Bot response: I'm a simple chatbot that can help with basic math. Try asking me to add two numbers!
