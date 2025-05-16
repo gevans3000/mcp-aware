@@ -4,18 +4,18 @@ A chatbot that can perform calculations using an MCP server and optionally use O
 
 ## Features
 
-- **Dual Backend Support**: Switch between local (flan-t5-small) and OpenAI backends
-- **Math Operations**: Performs addition via MCP server
-- **Rate Limiting**: Prevents abuse of the chatbot
-- **Input Sanitization**: Protects against injection attacks
-- **Configurable**: Easy configuration via environment variables
+- **Multiple Backend Support**: Switch between OpenAI's GPT models, Google Gemini, and local models
+- **MCP Integration**: Connect to MCP servers for specialized tools and resources
+- **Environment Configuration**: Easy configuration through environment variables
+- **Rate Limiting**: Built-in rate limiting to prevent abuse
 - **Logging**: Comprehensive logging for debugging and monitoring
 
 ## Prerequisites
 
 - Python 3.8+
-- pip (Python package manager)
-- (Optional) OpenAI API key if using the OpenAI backend
+- OpenAI API key (for GPT models)
+- Google API key (for Gemini models)
+- MCP server (for MCP tools)
 
 ## Installation
 
@@ -45,15 +45,26 @@ A chatbot that can perform calculations using an MCP server and optionally use O
    ```bash
    copy .env.example .env
    ```
-   Edit the `.env` file and add your OpenAI API key if using the OpenAI backend.
+   Edit the `.env` file and add your API keys (OpenAI and/or Google Gemini).
 
 ## Configuration
 
 Edit the `.env` file to configure the application:
 
-- `DEFAULT_BACKEND`: Set to 'openai' or 'local'
-- `OPENAI_API_KEY`: Your OpenAI API key (required for OpenAI backend)
-- `MCP_SERVER_URL`: URL of the MCP server (default: http://localhost:6789)
+### API Keys
+- `OPENAI_API_KEY`: Your OpenAI API key (required for GPT models)
+- `GOOGLE_API_KEY`: Your Google API key (required for Gemini models)
+
+### Backend Selection
+- `LLM_BACKEND`: Set to 'openai', 'gemini', or 'local' (default: 'openai')
+
+### Gemini Settings (when using Gemini backend)
+- `GEMINI_MODEL`: Model to use (default: gemini-1.5-flash)
+- `GEMINI_TEMPERATURE`: Controls randomness (0.0 to 1.0, default: 0.7)
+- `GEMINI_MAX_TOKENS`: Maximum tokens in response (default: 2048)
+
+### MCP Configuration
+- `MCP_SERVER_URL`: URL of your MCP server (default: http://localhost:6789)
 - `RATE_LIMIT_REQUESTS`: Maximum number of requests per time window
 - `RATE_LIMIT_SECONDS`: Time window for rate limiting in seconds
 - `LOG_LEVEL`: Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)

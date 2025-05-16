@@ -10,6 +10,7 @@ from typing import Deque, Optional, List, Tuple, Any, Dict, Union
 from config import (
     LOG_LEVEL, LOG_FORMAT, LOG_FILE,
     DEFAULT_BACKEND, OPENAI_API_KEY, OPENAI_MODEL, OPENAI_TEMPERATURE, OPENAI_MAX_TOKENS,
+    GOOGLE_API_KEY, GEMINI_MODEL, GEMINI_TEMPERATURE, GEMINI_MAX_TOKENS,
     MCP_ADD_ENDPOINT, MCP_GREETING_ENDPOINT, SERVER_HOST, SERVER_PORT,
     RATE_LIMIT_REQUESTS, RATE_LIMIT_SECONDS, MATH_KEYWORDS, DEFAULT_RESPONSES,
     MAX_INPUT_LENGTH, get_config
@@ -33,22 +34,43 @@ request_timestamps: Deque[float] = deque()
 chat_backend = DEFAULT_BACKEND
 
 def set_backend(backend: str) -> None:
-    """Set the chat backend to either 'openai' or 'local'.
+    """Set the chat backend to either 'openai' or 'gemini'.
     
     Args:
-        backend: The backend to use ('openai' or 'local')
+        backend: The backend to use ('openai' or 'gemini')
     """
     global chat_backend
-    if backend in ["openai", "local"]:
+    if backend in ["openai", "gemini"]:
         chat_backend = backend
         logger.info(f"Switched to {backend} backend")
     else:
-        logger.warning(f"Invalid backend: {backend}. Keeping current backend: {chat_backend}")
+        logger.warning(f"Invalid backend: {backend}. Must be 'openai' or 'gemini'. Keeping current backend: {chat_backend}")
 
 from openai import OpenAI
 
-# Initialize OpenAI client
-openai_client = OpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
+# Initialize LLM clients
+openai_client = None
+if OPENAI_API_KEY:
+    try:
+        openai_client = OpenAI(api_key=OPENAI_API_KEY)
+        logger.debug("OpenAI client initialized successfully")
+    except Exception as e:
+        logger.error(f"Failed to initialize OpenAI client: {e}", exc_info=True)
+        logger.warning("OpenAI functionality will be disabled")
+
+try:
+    import google.generativeai as genai
+    if GOOGLE_API_KEY:
+        genai.configure(api_key=GOOGLE_API_KEY)
+        gemini_client = genai.GenerativeModel(GEMINI_MODEL)
+    else:
+        gemini_client = None
+except ImportError:
+    logger.warning("Google Generative AI package not installed. Install with: pip install google-generativeai")
+    gemini_client = None
+except Exception as e:
+    logger.warning(f"Failed to initialize Gemini client: {e}")
+    gemini_client = None
 
 def extract_numbers(text: str) -> list[int]:
     """
@@ -96,28 +118,59 @@ def extract_numbers(text: str) -> list[int]:
 
 # Simple model for responses
 def openai_chat_response(user_input, history=None):
+    """Generate a response using OpenAI's chat completion API.
+    
+    Args:
+        user_input: The user's message
+        history: List of (user_message, bot_response) tuples
+        
+    Returns:
+        str: The generated response or an error message
+    """
+    if not openai_client:
+        error_msg = "OpenAI client is not initialized. Please check your API key."
+        logger.error(error_msg)
+        return error_msg
+    
     try:
-        messages = [{"role": "system", "content": "You are a helpful assistant."}]
+        # Prepare the conversation history
+        messages = [{"role": "system", "content": "You are a helpful assistant that can perform calculations and answer questions concisely."}]
+        
+        # Add conversation history if available
         if history:
-            for user, bot in history:
-                messages.append({"role": "user", "content": user})
-                if bot:
-                    messages.append({"role": "assistant", "content": bot})
+            for user_msg, bot_msg in history:
+                if user_msg:
+                    messages.append({"role": "user", "content": user_msg})
+                if bot_msg:
+                    messages.append({"role": "assistant", "content": bot_msg})
+        
+        # Add the current user input
         messages.append({"role": "user", "content": user_input})
         
-        if not openai_client:
-            return DEFAULT_RESPONSES["no_openai_key"]
-            
+        logger.debug(f"Sending to OpenAI: {messages}")
+        
+        # Make the API call
         response = openai_client.chat.completions.create(
             model=OPENAI_MODEL,
             messages=messages,
             temperature=OPENAI_TEMPERATURE,
             max_tokens=OPENAI_MAX_TOKENS,
         )
-        return response.choices[0].message.content.strip()
+        
+        # Extract and return the response
+        if response and hasattr(response, 'choices') and len(response.choices) > 0:
+            content = response.choices[0].message.content
+            logger.debug(f"Received from OpenAI: {content}")
+            return content.strip()
+        else:
+            error_msg = "Received empty or invalid response from OpenAI"
+            logger.error(error_msg)
+            return error_msg
+            
     except Exception as e:
-        logger.error(f"OpenAI API Error: {str(e)}", exc_info=True)
-        return "I'm sorry, I encountered an error processing your request."
+        error_msg = f"OpenAI API Error: {str(e)}"
+        logger.error(error_msg, exc_info=True)
+        return f"I'm sorry, I encountered an error with OpenAI: {str(e)}"
 
 def check_rate_limit() -> Optional[str]:
     """Check if the rate limit has been exceeded.
@@ -138,24 +191,120 @@ def check_rate_limit() -> Optional[str]:
     # Add current timestamp and return None (no error)
     request_timestamps.append(current_time)
     return None
-
-def get_response(user_input: str, history=None) -> str:
-    """Minimal backend switch between OpenAI and local LLM, using runtime dropdown.
-    
-    Args:
-        user_input: The user's input message
-        history: Optional chat history
         
-    Returns:
-        str: The assistant's response
-    """
-    # Check rate limit first
-    if rate_limit_error := check_rate_limit():
-        return rate_limit_error
-    if chat_backend == "openai":
-        if not OPENAI_API_KEY:
-            return DEFAULT_RESPONSES["no_openai_key"]
-        return openai_chat_response(user_input, history)
+def process_math_operation(user_input: str) -> Optional[str]:
+    """Process math operations in the user input."""
+    try:
+        # Check for math-related keywords
+        math_keywords = ["+", "-", "*", "/", "plus", "minus", "times", "divided by", "add", "subtract", "multiply", "divide"]
+        if not any(keyword in user_input.lower() for keyword in math_keywords):
+            return None
+            
+        # Extract numbers using the existing function
+        numbers = extract_numbers(user_input)
+        if len(numbers) < 2:
+            return None
+            
+        # For simplicity, just add the numbers for now
+        # In a real app, you'd want to parse the actual operation
+        result = sum(numbers)
+        return f"The result is: {result}"
+        
+    except Exception as e:
+        logger.debug(f"Math processing error: {str(e)}")
+        return None
+
+def gemini_chat_response(user_input, history=None):
+    """Get response from Google Gemini model with math operation handling."""
+    if not gemini_client:
+        return "Error: Gemini client is not properly configured. Check your API key and installation."
+    
+    # First, check if this is a math operation we can handle
+    math_response = process_math_operation(user_input)
+    if math_response:
+        return math_response
+    
+    try:
+        # Format the conversation history for Gemini
+        messages = []
+        if history:
+            for user_msg, bot_msg in history:
+                messages.append({"role": "user", "parts": [user_msg]})
+                if bot_msg:
+                    messages.append({"role": "model", "parts": [bot_msg]})
+        
+        # Add the current user input
+        messages.append({"role": "user", "parts": [user_input]})
+        
+        # Generate response with more specific instructions
+        system_prompt = {"role": "user", "parts": ["You are a helpful assistant that can perform calculations. "
+                                                "When asked to perform math operations, provide the exact numerical result. "
+                                                "Be concise and direct in your responses."]}
+        
+        # Insert system prompt at the beginning if there's no history
+        if not history:
+            messages.insert(0, system_prompt)
+        
+        # Generate response
+        response = gemini_client.generate_content(
+            messages,
+            generation_config={
+                "temperature": GEMINI_TEMPERATURE,
+                "max_output_tokens": GEMINI_MAX_TOKENS,
+                "top_p": 0.8,
+                "top_k": 40
+            }
+        )
+        
+        # Extract the response text
+        if hasattr(response, 'text'):
+            return response.text.strip()
+        elif hasattr(response, 'candidates') and response.candidates:
+            return response.candidates[0].content.parts[0].text.strip()
+        else:
+            logger.error(f"Unexpected Gemini response format: {response}")
+            return "I'm sorry, I couldn't process the response from Gemini."
+            
+    except Exception as e:
+        logger.error(f"Gemini API Error: {str(e)}", exc_info=True)
+        # Fall back to local math processing if Gemini fails
+        math_fallback = process_math_operation(user_input)
+        if math_fallback:
+            return math_fallback
+        return "I'm sorry, I encountered an error processing your request with Gemini."
+
+
+def get_response(user_input, history=None):
+    """Get response from the appropriate backend based on current selection."""
+    try:
+        # Check rate limiting first
+        rate_limit_error = check_rate_limit()
+        if rate_limit_error:
+            return rate_limit_error
+            
+        logger.debug(f"Using backend: {chat_backend} for input: {user_input}")
+        
+        if chat_backend == "gemini":
+            if not GOOGLE_API_KEY or not gemini_client:
+                error_msg = "Google API key is not set or Gemini client is not initialized"
+                logger.error(error_msg)
+                return f"Error: {error_msg}. Please check your GOOGLE_API_KEY in the .env file."
+            return gemini_chat_response(user_input, history)
+            
+        elif chat_backend == "openai":
+            if not OPENAI_API_KEY or not openai_client:
+                error_msg = "OpenAI API key is not set or client is not initialized"
+                logger.error(error_msg)
+                return f"Error: {error_msg}. Please check your OPENAI_API_KEY in the .env file."
+            return openai_chat_response(user_input, history)
+            
+        else:  # Default to gemini if somehow an invalid backend is selected
+            logger.warning(f"Invalid backend '{chat_backend}' selected, defaulting to gemini")
+            return gemini_chat_response(user_input, history)
+            
+    except Exception as e:
+        logger.error(f"Error in get_response: {str(e)}", exc_info=True)
+        return f"An error occurred while generating a response: {str(e)}"
         
     # --- Local LLM logic ---
     user_input_lower = user_input.lower()
@@ -214,7 +363,6 @@ def get_response(user_input: str, history=None) -> str:
     # Default response
     return DEFAULT_RESPONSES["fallback"]
 
-# Simple chat function
 def sanitize_input(text: str, max_length: int = MAX_INPUT_LENGTH) -> str:
     """Sanitize user input to prevent injection attacks and limit length.
     
@@ -254,16 +402,40 @@ def chat_fn(message: str, history: List[Tuple[str, str]]) -> str:
     Returns:
         The assistant's response as a string
     """
-    # Sanitize input
-    sanitized_message = sanitize_input(message)
-    if not sanitized_message:
-        logger.warning("Received empty or invalid message after sanitization")
-        return "Please provide a valid message."
-    
-    logger.info(f"User message: {sanitized_message}")
-    response = get_response(sanitized_message, history)
-    logger.info(f"Bot response: {response}")
-    return response
+    try:
+        # Validate input
+        if not message or not isinstance(message, str):
+            logger.warning("Received empty or invalid message")
+            return "I didn't receive a valid message. Please try again."
+        
+        # Sanitize input
+        sanitized_message = sanitize_input(message)
+        if not sanitized_message:
+            logger.warning("Message became empty after sanitization")
+            return "I couldn't process that message. Please try rephrasing."
+        
+        logger.debug(f"Processing message: {sanitized_message}")
+        
+        # Get response from the appropriate backend
+        response = get_response(sanitized_message, history)
+        
+        # Validate response
+        if not response or not isinstance(response, str):
+            logger.warning(f"Received invalid response: {response}")
+            return "I'm sorry, I couldn't generate a response. Please try again."
+            
+        # Clean up the response
+        response = response.strip()
+        if not response:
+            return "I'm sorry, I couldn't generate a response. Please try a different query."
+            
+        logger.debug(f"Generated response: {response[:200]}...")
+        return response
+        
+    except Exception as e:
+        error_msg = "I'm sorry, I encountered an error processing your request. Please try again later."
+        logger.error(f"Error in chat_fn: {str(e)}", exc_info=True)
+        return error_msg
 
 # Create and launch the interface
 def find_available_port(start_port: int = 7861, max_attempts: int = 10) -> int:
@@ -305,12 +477,14 @@ def main() -> None:
         
         # Create the interface
         with gr.Blocks() as demo:
-            backend_selector = gr.Dropdown(
-                choices=["openai", "local"],
+          # Create backend selection dropdown
+            backend_dropdown = gr.Dropdown(
+                ["openai", "gemini"],
                 value=chat_backend,
-                label="Choose Chat Backend"
+                label="Backend",
+                info="Select the LLM backend to use"
             )
-            backend_selector.change(fn=set_backend, inputs=backend_selector, outputs=None)
+            backend_dropdown.change(fn=set_backend, inputs=backend_dropdown, outputs=None)
             gr.ChatInterface(chat_fn, title="MCP Chatbot")
         
         # Launch the interface

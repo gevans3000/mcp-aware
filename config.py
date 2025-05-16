@@ -22,11 +22,17 @@ MCP_GREETING_ENDPOINT = f"{MCP_SERVER_URL}/greeting/Test"
 RATE_LIMIT_REQUESTS = int(os.getenv("RATE_LIMIT_REQUESTS", "10"))
 RATE_LIMIT_SECONDS = int(os.getenv("RATE_LIMIT_SECONDS", "60"))
 
-# OpenAI configuration
+# LLM configuration
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-3.5-turbo")
+OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4.1-mini-2025-04-14")
 OPENAI_TEMPERATURE = float(os.getenv("OPENAI_TEMPERATURE", "0.7"))
 OPENAI_MAX_TOKENS = int(os.getenv("OPENAI_MAX_TOKENS", "150"))
+
+# Google Gemini configuration
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash-preview-04-17")
+GEMINI_TEMPERATURE = float(os.getenv("GEMINI_TEMPERATURE", "0.7"))
+GEMINI_MAX_TOKENS = int(os.getenv("GEMINI_MAX_TOKENS", "2048"))
 
 # Logging configuration
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
@@ -34,7 +40,7 @@ LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 LOG_FILE = os.getenv("LOG_FILE", "app.log")
 
 # Chat configuration
-DEFAULT_BACKEND = os.getenv("DEFAULT_BACKEND", "local").lower()
+DEFAULT_BACKEND = os.getenv("LLM_BACKEND", "gemini").lower()  # Options: 'openai' or 'gemini'
 MAX_INPUT_LENGTH = int(os.getenv("MAX_INPUT_LENGTH", "1000"))
 
 # Math operation keywords
