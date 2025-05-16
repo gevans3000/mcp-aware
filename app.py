@@ -6,10 +6,28 @@ from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
+LLM_BACKEND = os.getenv("LLM_BACKEND", "local").lower()
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-3.5-turbo")
+
+# Global runtime backend (default from env)
+chat_backend = LLM_BACKEND
+
+def set_backend(backend):
+    global chat_backend
+    chat_backend = backend
+
+from openai import OpenAI
+
+# Load environment variables
+load_dotenv()
 
 # Configuration
 MCP_URL = "http://localhost:6789"
 ADD_ENDPOINT = f"{MCP_URL}/tool/add"
+
+# Initialize OpenAI client
+openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def extract_numbers(text):
     """Extract numbers from text, handling different formats"""
@@ -44,10 +62,30 @@ def extract_numbers(text):
     return numbers
 
 # Simple model for responses
-def get_response(user_input):
-    """Simple response generator for the demo"""
+def openai_chat_response(user_input, history=None):
+    import openai
+    openai.api_key = OPENAI_API_KEY
+    messages = [{"role": "system", "content": "You are a helpful assistant."}]
+    if history:
+        for user, bot in history:
+            messages.append({"role": "user", "content": user})
+            if bot:
+                messages.append({"role": "assistant", "content": bot})
+    messages.append({"role": "user", "content": user_input})
+    response = openai.ChatCompletion.create(
+        model=OPENAI_MODEL,
+        messages=messages,
+        temperature=0.7,
+        max_tokens=150,
+    )
+    return response.choices[0].message["content"].strip()
+
+def get_response(user_input, history=None):
+    """Minimal backend switch between OpenAI and local LLM, using runtime dropdown."""
+    if chat_backend == "openai" and OPENAI_API_KEY:
+        return openai_chat_response(user_input, history)
+    # --- Existing local LLM logic below ---
     user_input_lower = user_input.lower()
-    
     # Check for math operations
     math_keywords = ["add", "plus", "+", "sum", "total", "what's", "what is"]
     if any(word in user_input_lower for word in math_keywords):
@@ -83,13 +121,13 @@ def get_response(user_input):
             return f"I had trouble with that calculation: {str(e)}"
     
     # Simple responses
-    if "hello" in user_input or "hi" in user_input:
+    if "hello" in user_input_lower or "hi" in user_input_lower:
         return "Hello! I'm your MCP Chatbot. I can help with simple calculations. Try asking me to add two numbers!"
     
-    if "how are you" in user_input:
+    if "how are you" in user_input_lower:
         return "I'm just a simple bot, but I'm functioning well! How can I assist you today?"
     
-    if "thank" in user_input:
+    if "thank" in user_input_lower:
         return "You're welcome! Is there anything else I can help you with?"
     
     # Default response
@@ -99,7 +137,7 @@ def get_response(user_input):
 def chat_fn(message, history):
     """Handle chat messages"""
     print(f"User: {message}")
-    response = get_response(message)
+    response = get_response(message, history)
     print(f"Bot: {response}")
     return response
 
@@ -118,13 +156,17 @@ def main():
         print("Please make sure server.py is running in another terminal")
     
     # Create and launch the interface
-    demo = gr.ChatInterface(
-        fn=chat_fn,
-        title="MCP Chatbot",
-        description="A simple chatbot that can perform calculations using MCP tools"
-    )
+    with gr.Blocks() as demo:
+        backend_selector = gr.Dropdown(
+            choices=["openai", "local"],
+            value=chat_backend,
+            label="Choose Chat Backend"
+        )
+        backend_selector.change(fn=set_backend, inputs=backend_selector, outputs=None)
+        gr.ChatInterface(chat_fn, title="MCP Chatbot")
     
-    demo.launch(server_name="0.0.0.0", server_port=7860, share=False)
+    # Launch the interface
+    demo.launch(server_name="0.0.0.0", server_port=7860)
 
 if __name__ == "__main__":
     main()
