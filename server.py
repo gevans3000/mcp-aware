@@ -14,6 +14,7 @@ app.add_middleware(
 )
 
 # Simple addition endpoint
+@app.get("/tool/add")
 @app.post("/tool/add")
 async def add_numbers(a: int, b: int):
     """Add two numbers."""
@@ -27,4 +28,4 @@ async def get_greeting(name: str):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=6789)  # runs on http://localhost:6789
+    uvicorn.run(app, host="0.0.0.0", port=6790)  # runs on http://localhost:6790

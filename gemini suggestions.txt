@@ -1,0 +1,825 @@
+The user has provided a collection of Python files for a chatbot application, along with some research documents and a console log. The console log shows that app.py failed to connect to the server.py (MCP server) and exited when the user chose not to continue.
+
+The main issues are:
+
+MCP Server Not Running: The immediate cause of the error in the console log is that the server.py was not running or was inaccessible when app.py started.
+
+Unreachable Code for MCP Tool Usage: The primary logic in app.py that was intended to use the MCP_ADD_ENDPOINT (for adding numbers via the MCP server) is currently in an unreachable code block within the get_response function.
+
+Misaligned Math Processing:
+
+The Gemini backend (gemini_chat_response) has a process_math_operation function that performs summation (sum(numbers)) locally, rather than using the MCP server.
+
+The OpenAI backend (openai_chat_response) does not have explicit math handling logic; it relies on the LLM's capabilities.
+
+The MCP server's /tool/add endpoint is effectively unused by the active code paths.
+
+To address these issues and make the MCP server's addition tool functional within the application, I will:
+
+Modify the process_math_operation function (used by the Gemini backend) to call the MCP_ADD_ENDPOINT from server.py instead of performing a local sum. This will integrate the MCP server's math capability into the Gemini chat flow.
+
+Remove the unreachable "Local LLM logic" block from the get_response function, as its math-handling functionality will now be part of the Gemini backend.
+
+These changes will ensure that if the Gemini backend is selected and a math query is made:
+
+The application attempts to use the MCP_ADD_ENDPOINT.
+
+The MCP server (if running) will perform the addition.
+
+The startup check in app.py for the MCP server becomes more critical, as the server is actively used.
+
+The fix for the console error itself is to ensure server.py is running before app.py is started. The code modifications below make that server useful.
+
+--- START OF FILE app.py ---
+
+import json
+import os
+import sys
+import time
+import logging
+import requests
+import gradio as gr
+from collections import deque
+from typing import Deque, Optional, List, Tuple, Any, Dict, Union
+
+# Import configuration
+from config import (
+    LOG_LEVEL, LOG_FORMAT, LOG_FILE,
+    DEFAULT_BACKEND, OPENAI_API_KEY, OPENAI_MODEL, OPENAI_TEMPERATURE, OPENAI_MAX_TOKENS,
+    GOOGLE_API_KEY, GEMINI_MODEL, GEMINI_TEMPERATURE, GEMINI_MAX_TOKENS,
+    MCP_ADD_ENDPOINT, MCP_GREETING_ENDPOINT, SERVER_HOST, SERVER_PORT,
+    RATE_LIMIT_REQUESTS, RATE_LIMIT_SECONDS, MATH_KEYWORDS, DEFAULT_RESPONSES,
+    MAX_INPUT_LENGTH, get_config
+)
+
+# Configure logging
+logging.basicConfig(
+    level=getattr(logging, LOG_LEVEL.upper()),
+    format=LOG_FORMAT,
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler(LOG_FILE)
+    ]
+)
+logger = logging.getLogger(__name__)
+
+# Rate limiting
+request_timestamps: Deque[float] = deque()
+
+# Global runtime backend (default from config)
+chat_backend = DEFAULT_BACKEND
+
+def set_backend(backend: str) -> None:
+    """Set the chat backend to either 'openai' or 'gemini'.
+    
+    Args:
+        backend: The backend to use ('openai' or 'gemini')
+    """
+    global chat_backend
+    if backend in ["openai", "gemini"]:
+        chat_backend = backend
+        logger.info(f"Switched to {backend} backend")
+    else:
+        logger.warning(f"Invalid backend: {backend}. Must be 'openai' or 'gemini'. Keeping current backend: {chat_backend}")
+
+from openai import OpenAI
+
+# Initialize LLM clients
+openai_client = None
+if OPENAI_API_KEY:
+    try:
+        openai_client = OpenAI(api_key=OPENAI_API_KEY)
+        logger.debug("OpenAI client initialized successfully")
+    except Exception as e:
+        logger.error(f"Failed to initialize OpenAI client: {e}", exc_info=True)
+        logger.warning("OpenAI functionality will be disabled")
+
+try:
+    import google.generativeai as genai
+    if GOOGLE_API_KEY:
+        genai.configure(api_key=GOOGLE_API_KEY)
+        gemini_client = genai.GenerativeModel(GEMINI_MODEL)
+    else:
+        gemini_client = None
+except ImportError:
+    logger.warning("Google Generative AI package not installed. Install with: pip install google-generativeai")
+    gemini_client = None
+except Exception as e:
+    logger.warning(f"Failed to initialize Gemini client: {e}")
+    gemini_client = None
+
+def extract_numbers(text: str) -> list[int]:
+    """
+    Extract numbers from text, handling digits, number words, and basic arithmetic.
+    
+    Args:
+        text: Input text to extract numbers from
+        
+    Returns:
+        List of integers found in the text
+    """
+    import re
+    
+    # Mapping of number words to their numeric values
+    number_words = {
+        'zero': 0, 'one': 1, 'two': 2, 'three': 3, 'four': 4,
+        'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9,
+        'ten': 10, 'eleven': 11, 'twelve': 12, 'thirteen': 13,
+        'fourteen': 14, 'fifteen': 15, 'sixteen': 16, 'seventeen': 17,
+        'eighteen': 18, 'nineteen': 19, 'twenty': 20, 'thirty': 30,
+        'forty': 40, 'fifty': 50, 'sixty': 60, 'seventy': 70,
+        'eighty': 80, 'ninety': 90, 'hundred': 100, 'thousand': 1000,
+        'million': 1000000, 'billion': 1000000000
+    }
+    
+    # First, try to extract numbers in digit form
+    numbers = [int(match) for match in re.findall(r'\b\d+\b', text)]
+    
+    # If no digit numbers found, try to find number words
+    if not numbers:
+        text_lower = text.lower()
+        # Find all number words in the text
+        found_words = [word for word in number_words if f' {word} ' in f' {text_lower} ']
+        
+        # Convert found words to numbers
+        if found_words:
+            numbers = [number_words[word] for word in found_words]
+    
+    # If still no numbers, try to find spelled out numbers as separate words
+    if not numbers:
+        words = re.findall(r'\b\w+\b', text.lower())
+        numbers = [number_words[word] for word in words if word in number_words]
+    
+    return numbers
+
+# Simple model for responses
+def openai_chat_response(user_input, history=None, max_retries=3, initial_delay=1):
+    """
+    Generate a response using OpenAI's chat completion API with retry logic.
+    
+    Args:
+        user_input: The user's message
+        history: List of (user_message, bot_response) tuples
+        max_retries: Maximum number of retry attempts
+        initial_delay: Initial delay between retries in seconds (exponential backoff)
+        
+    Returns:
+        str: The generated response or an error message
+    """
+    def make_attempt(attempt=0, delay=None):
+        if delay is None:
+            delay = initial_delay
+            
+        try:
+            if not openai_client or not OPENAI_API_KEY:
+                error_msg = "OpenAI client is not initialized or API key is missing"
+                logger.error(error_msg)
+                return f"Error: {error_msg}"
+                
+            # Prepare messages from history
+            messages = []
+            if history:
+                for user_msg, bot_msg in history:
+                    messages.append({"role": "user", "content": user_msg})
+                    if bot_msg:  # Only add non-empty bot responses
+                        messages.append({"role": "assistant", "content": bot_msg})
+            
+            # Add current user message
+            messages.append({"role": "user", "content": user_input})
+            
+            logger.debug(f"Sending to OpenAI (attempt {attempt + 1}): {messages[-1]['content'][:100]}...")
+            
+            # Make API call with timeout
+            response = openai_client.chat.completions.create(
+                model=OPENAI_MODEL,
+                messages=messages,
+                temperature=OPENAI_TEMPERATURE,
+                max_tokens=OPENAI_MAX_TOKENS,
+                timeout=30  # 30 seconds timeout
+            )
+            
+            # Extract and return the response
+            if response.choices and len(response.choices) > 0:
+                response_text = response.choices[0].message.content.strip()
+                logger.debug(f"Received response from OpenAI: {response_text[:100]}...")
+                return response_text
+            else:
+                logger.warning("No response choices returned from OpenAI")
+                return "I'm sorry, I couldn't generate a response. Please try again."
+                
+        except Exception as e:
+            error_msg = str(e).lower()
+            logger.warning(f"OpenAI API attempt {attempt + 1} failed: {error_msg}")
+            
+            # Don't retry for these errors
+            if any(msg in error_msg for msg in ["invalid api key", "authentication", "not found"]):
+                logger.error(f"Fatal error in OpenAI API: {error_msg}")
+                return f"Error: {str(e)}. Please check your OpenAI API key and model settings."
+                
+            # Retry for rate limits or temporary issues
+            if attempt < max_retries:
+                wait_time = delay * (2 ** attempt)  # Exponential backoff
+                logger.info(f"Retrying in {wait_time} seconds... (attempt {attempt + 1}/{max_retries})")
+                time.sleep(wait_time)
+                return make_attempt(attempt + 1, delay)
+                
+            logger.error(f"OpenAI API failed after {max_retries} attempts: {error_msg}", exc_info=True)
+            return "I'm sorry, I'm having trouble connecting to the AI service. Please try again later."
+    
+    return make_attempt()
+
+def check_rate_limit() -> Optional[str]:
+    """Check if the rate limit has been exceeded.
+    
+    Returns:
+        str: Error message if rate limit exceeded, None otherwise
+    """
+    current_time = time.time()
+    
+    # Remove timestamps older than the time window
+    while request_timestamps and request_timestamps[0] < current_time - RATE_LIMIT_SECONDS:
+        request_timestamps.popleft()
+    
+    # Check if we've exceeded the rate limit
+    if len(request_timestamps) >= RATE_LIMIT_REQUESTS:
+        return "Rate limit exceeded. Please try again later."
+    
+    # Add current timestamp and return None (no error)
+    request_timestamps.append(current_time)
+    return None
+        
+def process_math_operation(user_input: str) -> Optional[str]:
+    """
+    Process math operations in the user input by calling the MCP server.
+    Currently supports adding the first two numbers found.
+    """
+    try:
+        # Check for math-related keywords. This list is more comprehensive.
+        # MATH_KEYWORDS from config is ["add", "plus", "+", "sum", "total", "what's", "what is"]
+        # This internal list is broader for detection.
+        math_operation_keywords = ["+", "-", "*", "/", "plus", "minus", "times", "divided by", "add", "subtract", "multiply", "divide", "sum", "total", "calculate", "what is", "what's"]
+        if not any(keyword in user_input.lower() for keyword in math_operation_keywords):
+            return None
+            
+        numbers = extract_numbers(user_input)
+        logger.debug(f"Extracted numbers for math: {numbers} from input: '{user_input}'")
+
+        if len(numbers) >= 2:
+            a, b = numbers[0], numbers[1]
+            # If more numbers are present, we are only using the first two for the /tool/add endpoint.
+            # Future enhancement could involve a more complex parsing or a different MCP endpoint.
+            
+            logger.info(f"Attempting MCP calculation: {a} + {b}")
+            try:
+                response = requests.post(
+                    f"{MCP_ADD_ENDPOINT}?a={a}&b={b}",
+                    timeout=10  # Increased timeout slightly
+                )
+                response.raise_for_status() # Raise HTTPError for bad responses (4xx or 5xx)
+                
+                response_data = response.json()
+                result = response_data.get("result")
+
+                if result is not None:
+                    logger.info(f"MCP Calculation successful: {a} + {b} = {result}")
+                    # Provide a more natural response
+                    if "what is" in user_input.lower() or "what's" in user_input.lower() or "sum" in user_input.lower() or "total" in user_input.lower():
+                        return f"The result of {a} + {b} is {result}."
+                    else:
+                        return f"Okay, {a} + {b} equals {result}."
+                else:
+                    logger.warning(f"MCP calculation error: 'result' key missing in response. Response: {response.text}")
+                    return DEFAULT_RESPONSES["calculation_error"]
+                    
+            except requests.exceptions.Timeout:
+                logger.error(f"MCP calculation request timed out for {MCP_ADD_ENDPOINT}", exc_info=True)
+                return DEFAULT_RESPONSES["server_error"]
+            except requests.exceptions.RequestException as e:
+                logger.error(f"MCP calculation request failed: {str(e)}", exc_info=True)
+                return DEFAULT_RESPONSES["server_error"]
+            except json.JSONDecodeError:
+                logger.error(f"MCP calculation error: Could not decode JSON response. Response: {response.text}", exc_info=True)
+                return DEFAULT_RESPONSES["calculation_error"]
+        elif len(numbers) == 1:
+             # Could ask for the second number, or state it needs two.
+            return DEFAULT_RESPONSES["no_numbers"] # "I need two numbers to add..."
+        else:
+            # No numbers found, but math keywords were present. This might be a general math question.
+            # Let the LLM handle it if it's not a direct calculation request.
+            return None # Let LLM attempt to answer
+            
+    except Exception as e:
+        logger.error(f"Error in process_math_operation: {str(e)}", exc_info=True)
+        return DEFAULT_RESPONSES["calculation_error"] # Generic calculation error
+
+def gemini_chat_response(user_input, history=None, max_retries=3, initial_delay=1):
+    """
+    Get response from Google Gemini model with math operation handling (via MCP server) and retry logic.
+    
+    Args:
+        user_input: The user's message
+        history: List of (user_message, bot_response) tuples
+        max_retries: Maximum number of retry attempts
+        initial_delay: Initial delay between retries in seconds (exponential backoff)
+        
+    Returns:
+        str: The generated response or an error message
+    """
+    def make_attempt(attempt=0, delay=None):
+        if delay is None:
+            delay = initial_delay
+            
+        try:
+            # First, check if this is a math operation we can handle via MCP
+            math_response = process_math_operation(user_input)
+            if math_response:
+                # If math_response is one of the error messages, return it directly.
+                # If it's a successful calculation, also return it.
+                return math_response
+            
+            # If not a math operation handled locally, or if process_math_operation returned None (e.g. no numbers), proceed with Gemini API.
+            if not gemini_client:
+                error_msg = "Gemini client is not properly configured. Check your API key and installation."
+                logger.error(error_msg)
+                return error_msg
+
+            # Format the conversation history for Gemini
+            messages = []
+            if history:
+                for user_msg, bot_msg in history:
+                    if user_msg: 
+                        messages.append({"role": "user", "parts": [user_msg]})
+                    if bot_msg:
+                        messages.append({"role": "model", "parts": [bot_msg]})
+            
+            messages.append({"role": "user", "parts": [user_input]})
+            
+            if not history: # Add system prompt if no history
+                system_prompt_text = ("You are a helpful assistant. "
+                                      "If asked to perform simple addition of two numbers, it will be handled externally. "
+                                      "For other queries, provide concise and direct responses.")
+                messages.insert(0, {"role": "user", "parts": [system_prompt_text]}) # Gemini prefers user role for system-like instructions at start
+                messages.insert(1, {"role": "model", "parts": ["Okay, I understand."]})
+
+
+            logger.debug(f"Sending to Gemini (attempt {attempt + 1}): {user_input[:100]}...")
+            
+            response = gemini_client.generate_content(
+                messages,
+                generation_config={
+                    "temperature": GEMINI_TEMPERATURE,
+                    "max_output_tokens": GEMINI_MAX_TOKENS,
+                    "top_p": 0.8, # Example, adjust as needed
+                    "top_k": 40  # Example, adjust as needed
+                },
+                request_options={"timeout": 30}
+            )
+            
+            if hasattr(response, 'text'):
+                response_text = response.text.strip()
+            elif hasattr(response, 'candidates') and response.candidates and hasattr(response.candidates[0], 'content'):
+                response_text = response.candidates[0].content.parts[0].text.strip()
+            else:
+                logger.error(f"Unexpected Gemini response format: {response}")
+                raise ValueError("Unexpected response format from Gemini API")
+            
+            logger.debug(f"Received response from Gemini: {response_text[:100]}...")
+            return response_text
+            
+        except Exception as e:
+            error_msg = str(e).lower()
+            logger.warning(f"Gemini API attempt {attempt + 1} failed: {error_msg}")
+            
+            if any(msg in error_msg for msg in ["api key", "authentication", "not found", "invalid"]):
+                logger.error(f"Fatal error in Gemini API: {error_msg}")
+                return f"Error: {str(e)}. Please check your Gemini API key and model settings."
+                
+            # Fallback to math processing was already tried at the beginning.
+            
+            if attempt < max_retries:
+                wait_time = delay * (2 ** attempt)
+                logger.info(f"Retrying Gemini in {wait_time} seconds... (attempt {attempt + 1}/{max_retries})")
+                time.sleep(wait_time)
+                return make_attempt(attempt + 1, delay)
+                
+            logger.error(f"Gemini API failed after {max_retries} attempts: {error_msg}", exc_info=True)
+            return "I'm sorry, I'm having trouble connecting to the AI service. Please try again later."
+    
+    return make_attempt()
+
+
+def get_response(user_input, history=None, max_retries=3, retry_delay=2):
+    """
+    Get response from the appropriate backend based on current selection.
+    
+    Args:
+        user_input: The user's input message
+        history: List of previous messages in the conversation
+        max_retries: Maximum number of retry attempts for API calls (used by internal LLM client functions)
+        retry_delay: Initial delay between retries in seconds (used by internal LLM client functions)
+        
+    Returns:
+        str: The generated response or an error message
+    """
+    # This inner function 'make_attempt' is somewhat redundant given openai_chat_response and
+    # gemini_chat_response have their own retry logic.
+    # However, it serves as a single point for rate limiting and backend selection.
+    def make_attempt(attempt=0, current_delay=None): # 'attempt' and 'current_delay' are not used here for retries
+        if current_delay is None:
+            current_delay = retry_delay # Not used for retries at this level
+            
+        try:
+            rate_limit_error = check_rate_limit()
+            if rate_limit_error:
+                return rate_limit_error
+                
+            logger.debug(f"Using backend: {chat_backend} for input: {user_input}")
+            
+            if chat_backend == "gemini":
+                if not GOOGLE_API_KEY or not gemini_client:
+                    error_msg = "Google API key is not set or Gemini client is not initialized"
+                    logger.error(error_msg)
+                    return f"Error: {error_msg}. Please check your GOOGLE_API_KEY in the .env file."
+                # Retries are handled within gemini_chat_response
+                return gemini_chat_response(user_input, history, max_retries=max_retries) 
+                
+            elif chat_backend == "openai":
+                if not OPENAI_API_KEY or not openai_client:
+                    error_msg = "OpenAI API key is not set or client is not initialized"
+                    logger.error(error_msg)
+                    return f"Error: {error_msg}. Please check your OPENAI_API_KEY in the .env file."
+                # Retries are handled within openai_chat_response
+                return openai_chat_response(user_input, history, max_retries=max_retries)
+                
+            else: 
+                logger.warning(f"Invalid backend '{chat_backend}' selected, defaulting to gemini (if available) or error.")
+                if GOOGLE_API_KEY and gemini_client:
+                    set_backend("gemini") # Switch to gemini
+                    return gemini_chat_response(user_input, history, max_retries=max_retries)
+                elif OPENAI_API_KEY and openai_client:
+                    set_backend("openai") # Switch to openai
+                    return openai_chat_response(user_input, history, max_retries=max_retries)
+                else:
+                    logger.error("No valid LLM backend is configured or available.")
+                    return "Error: No LLM backend is available. Please configure API keys."
+                
+        except requests.exceptions.RequestException as e: # This might catch MCP related errors if not handled earlier
+            logger.error(f"Network error during get_response: {str(e)}", exc_info=True)
+            return "I'm having trouble with a network connection. Please check your internet and try again."
+            
+        except Exception as e:
+            logger.error(f"Error in get_response: {str(e)}", exc_info=True)
+            if "authentication" in str(e).lower():
+                return "Error: There's an issue with the API authentication. Please check your API keys."
+            return "I'm sorry, I encountered an error while processing your request. Please try again."
+    
+    return make_attempt()
+        
+    # --- The following block of "Local LLM logic" was unreachable and has been removed. ---
+    # Its math functionality is now integrated into `process_math_operation` used by `gemini_chat_response`.
+    # Other canned responses ("hello", "how are you", "thanks") are expected to be handled by the LLMs.
+    # The DEFAULT_RESPONSES["fallback"] would be used if an LLM fails to provide a response,
+    # or by the LLM itself if it's prompted to behave simply.
+
+
+def sanitize_input(text: str, max_length: int = MAX_INPUT_LENGTH) -> str:
+    """Sanitize user input to prevent injection attacks and limit length.
+    
+    Args:
+        text: The input text to sanitize
+        max_length: Maximum allowed length of the input
+        
+    Returns:
+        Sanitized text
+    """
+    if not text or not isinstance(text, str):
+        return ""
+    
+    text = text[:max_length]
+    text = text.replace('\x00', '').replace('\r', '').replace('\n', ' ')
+    
+    import re
+    text = re.sub(r'<[^>]*>', '', text)
+    
+    return text.strip()
+
+def chat_fn(message: str, history: List[Tuple[str, str]]) -> str:
+    """
+    Process a chat message and return a response.
+    
+    This function sanitizes the input, processes it through the selected backend,
+    and returns an appropriate response. It also handles logging of the conversation.
+    
+    Args:
+        message: The user's input message
+        history: List of tuples containing (user_message, bot_response) pairs
+        
+    Returns:
+        The assistant's response as a string
+    """
+    try:
+        if not message or not isinstance(message, str):
+            logger.warning("Received empty or invalid message")
+            return DEFAULT_RESPONSES.get("invalid_input", "I didn't receive a valid message. Please try again.")
+        
+        sanitized_message = sanitize_input(message)
+        if not sanitized_message:
+            logger.warning("Message became empty after sanitization")
+            return DEFAULT_RESPONSES.get("invalid_input", "I couldn't process that message. Please try rephrasing.")
+        
+        logger.debug(f"Processing message: {sanitized_message}")
+        
+        response = get_response(sanitized_message, history)
+        
+        if not response or not isinstance(response, str):
+            logger.warning(f"Received invalid response from get_response: {response}")
+            return DEFAULT_RESPONSES.get("fallback", "I'm sorry, I couldn't generate a response. Please try again.")
+            
+        response = response.strip()
+        if not response:
+            return DEFAULT_RESPONSES.get("fallback", "I'm sorry, I couldn't generate a response. Please try a different query.")
+            
+        logger.debug(f"Generated response: {response[:200]}...")
+        return response
+        
+    except Exception as e:
+        error_msg = DEFAULT_RESPONSES.get("fallback", "I'm sorry, I encountered an error processing your request. Please try again later.")
+        logger.error(f"Error in chat_fn: {str(e)}", exc_info=True)
+        return error_msg
+
+# Create and launch the interface
+def find_available_port(start_port: int = 7861, max_attempts: int = 10) -> int:
+    """Find an available port starting from the specified port."""
+    import socket
+    from contextlib import closing
+    
+    for port_offset in range(max_attempts): # Corrected loop variable
+        current_port = start_port + port_offset
+        try:
+            with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as sock:
+                sock.bind(('', current_port))
+                return current_port
+        except OSError:
+            logger.debug(f"Port {current_port} is in use.")
+            continue
+    raise OSError(f"No available port found in range {start_port}-{start_port + max_attempts - 1}")
+
+
+def toggle_sidebar(state):
+    # This function seems to expect 'state' to be the current visibility of the sidebar.
+    # Gradio's gr.Variable(False, visible=False) might not pass state correctly this way.
+    # Typically, state would be managed with gr.State() if its value needs to be preserved across calls.
+    # For a simple toggle, just returning gr.update(visible=not current_visibility_of_sidebar)
+    # is better if current_visibility_of_sidebar can be reliably obtained or if `state` truly represents it.
+    # However, the input is gr.Variable(False, visible=False), meaning 'state' will always be False.
+    # A common pattern is to use gr.State() for the sidebar's visibility.
+    # Let's assume for now it works as intended by Gradio's internal handling of visible=not state.
+    return gr.update(visible=not state) # This will toggle based on initial False if not careful.
+                                        # A better way: pass sidebar itself as input and check its current visible attr if possible,
+                                        # or use a gr.State to hold the visibility.
+                                        # For simplicity, we'll leave as is, assuming it works as intended.
+
+def is_port_in_use(port: int) -> bool:
+    """Check if a port is already in use."""
+    import socket
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        return s.connect_ex(('localhost', port)) == 0
+
+def main() -> None:
+    """
+    Main function to initialize and run the MCP Chatbot.
+    
+    This function sets up the Gradio interface, tests the MCP server connection,
+    and launches the chat application on an available port.
+    """
+    try:
+        # Try default port first, then find an available one
+        port_to_use = SERVER_PORT # From config, e.g. 7861
+        max_port_attempts = 10
+        
+        if is_port_in_use(port_to_use):
+            logger.info(f"Default port {port_to_use} is in use. Attempting to find an available port.")
+            try:
+                port_to_use = find_available_port(port_to_use + 1, max_port_attempts)
+            except OSError as e:
+                logger.error(f"Could not find an available port: {e}")
+                sys.exit(1) # Exit if no port can be found
+        
+        logger.info("="*50)
+        logger.info("Starting MCP Chatbot...")
+        logger.info(f"MCP Server URL: {MCP_GREETING_ENDPOINT.replace('/greeting/Test', '')}")
+        logger.info(f"Web Interface: http://127.0.0.1:{port_to_use}") # Use 127.0.0.1 for clarity
+        logger.info("="*50)
+        
+        max_retries = 3
+        retry_delay = 2 
+        server_available = False
+        
+        for attempt in range(max_retries):
+            try:
+                logger.info(f"Testing connection to MCP server (attempt {attempt + 1}/{max_retries})...")
+                response = requests.get(MCP_GREETING_ENDPOINT, timeout=5)
+                response.raise_for_status()
+                logger.info(f"MCP Server test successful: {response.status_code} - {response.text}")
+                server_available = True
+                break
+            except requests.exceptions.RequestException as e:
+                if attempt < max_retries - 1:
+                    wait_time = retry_delay * (attempt + 1) # Linear backoff for server check
+                    logger.warning(f"Could not connect to MCP server: {str(e)}")
+                    logger.warning(f"Retrying in {wait_time} seconds...")
+                    time.sleep(wait_time)
+                else:
+                    logger.error(f"Failed to connect to MCP server at {MCP_GREETING_ENDPOINT.replace('/greeting/Test', '')} after {max_retries} attempts: {str(e)}")
+                    logger.error("Please make sure server.py is running in another terminal.")
+                    logger.error(f"Example command to start server: python server.py")
+                    
+                    # Ask user if they want to continue without MCP server
+                    # Note: With changes, Gemini backend uses MCP for math, so MCP server is more crucial.
+                    if input("\nContinue without MCP server? (y/n): ").lower() != 'y':
+                        logger.info("Exiting...")
+                        sys.exit(1)
+                    logger.warning("Continuing without MCP server. Math operations via Gemini backend will fail or be limited.")
+        
+        with gr.Blocks(theme=gr.themes.Soft(
+            primary_hue="blue",
+            neutral_hue="slate",
+            spacing_size="md",
+            radius_size="lg"
+        )) as demo:
+            current_conversation = gr.State("") # Unused?
+            chat_history_state = gr.State([]) # Holds the actual history list of tuples
+            sidebar_visible_state = gr.State(True) # State for sidebar visibility
+
+            with gr.Row():
+                with gr.Column(scale=1, variant="panel", visible=True) as sidebar: # Initial visibility from here
+                    gr.Markdown("### Chat History")
+                    new_chat_btn = gr.Button("New Chat", variant="primary")
+                    # chat_list = gr.List( # This component was unused, consider implementing conversation saving/loading
+                    #     [],
+                    #     label="Conversations",
+                    #     interactive=False
+                    # )
+                    
+                    with gr.Accordion("Settings", open=False):
+                        backend_dropdown = gr.Dropdown(
+                            ["gemini", "openai"], # Ensure these are valid
+                            value=chat_backend,
+                            label="AI Model",
+                            info="Select the LLM backend to use"
+                        )
+                
+                with gr.Column(scale=4) as main_col:
+                    with gr.Row():
+                        toggle_btn = gr.Button("☰", elem_classes="icon-button")
+                        gr.Markdown("# MCP Chatbot", elem_classes="title")
+                    
+                    chatbot_display = gr.Chatbot( # This is for display
+                        [],
+                        elem_id="chatbot",
+                        height="70vh",
+                        show_copy_button=True,
+                        show_share_button=False, # Share button often requires more setup
+                        avatar_images=(
+                            "assets/user.png" if os.path.exists("assets/user.png") else None,
+                            "assets/logo.png" if os.path.exists("assets/logo.png") else None
+                        )
+                    )
+                    
+                    with gr.Row():
+                        msg_input = gr.Textbox(
+                            placeholder="Type your message here...",
+                            show_label=False,
+                            container=False,
+                            scale=8,
+                            min_width=0,
+                        )
+                        submit_btn = gr.Button("Send", variant="primary", scale=1)
+                    
+                    with gr.Row():
+                        clear_btn = gr.Button("Clear Chat")
+                        # Regenerate might need more complex logic to resend the last user message
+                        # regenerate_btn = gr.Button("Regenerate Response") 
+            
+            # Event handlers
+            def toggle_sidebar_fn(current_visibility):
+                new_visibility = not current_visibility
+                return {
+                    sidebar: gr.update(visible=new_visibility),
+                    sidebar_visible_state: new_visibility
+                }
+
+            toggle_btn.click(
+                fn=toggle_sidebar_fn,
+                inputs=[sidebar_visible_state],
+                outputs=[sidebar, sidebar_visible_state],
+                show_progress=False
+            )
+            
+            backend_dropdown.change(
+                fn=set_backend,
+                inputs=backend_dropdown,
+                outputs=None # No direct output to UI, changes global `chat_backend`
+            )
+
+            def handle_chat_submit(message_text, current_chat_history_list):
+                # Append user message for display *before* calling backend
+                current_chat_history_list.append((message_text, None))
+                # Yield interim history to update chatbot display immediately
+                # yield {chatbot_display: current_chat_history_list, msg_input: ""} # Clear input, show user msg
+                
+                bot_response_text = chat_fn(message_text, current_chat_history_list[:-1]) # Pass history *before* current user msg for context
+                
+                current_chat_history_list[-1] = (message_text, bot_response_text) # Update with bot response
+                return {
+                    chatbot_display: current_chat_history_list, 
+                    chat_history_state: current_chat_history_list,
+                    msg_input: "" # Clear input textbox
+                }
+
+            msg_input.submit(
+                fn=handle_chat_submit,
+                inputs=[msg_input, chat_history_state],
+                outputs=[chatbot_display, chat_history_state, msg_input],
+                queue=True
+            )
+            
+            submit_btn.click(
+                fn=handle_chat_submit,
+                inputs=[msg_input, chat_history_state],
+                outputs=[chatbot_display, chat_history_state, msg_input],
+                queue=True # Gradio handles queueing and threading
+            ) # .then removed as updates are handled in handle_chat_submit return dict
+            
+            def clear_chat_fn():
+                return {
+                    chatbot_display: [],
+                    chat_history_state: [],
+                    msg_input: ""
+                }
+
+            clear_btn.click(
+                fn=clear_chat_fn,
+                inputs=None,
+                outputs=[chatbot_display, chat_history_state, msg_input],
+                queue=False
+            )
+            
+            # Regenerate button logic:
+            # def regenerate_fn(current_chat_history_list):
+            #     if not current_chat_history_list or not current_chat_history_list[-1][0]:
+            #         return {chatbot_display: current_chat_history_list, chat_history_state: current_chat_history_list} # No change or error
+                
+            #     last_user_message = current_chat_history_list[-1][0]
+            #     history_for_regen = current_chat_history_list[:-1] # History before last exchange
+
+            #     # Show thinking indicator if possible, or just remove last bot response
+            #     # current_chat_history_list[-1] = (last_user_message, "...") # Placeholder
+            #     # yield {chatbot_display: current_chat_history_list}
+
+            #     new_bot_response = chat_fn(last_user_message, history_for_regen)
+            #     current_chat_history_list[-1] = (last_user_message, new_bot_response)
+            #     return {chatbot_display: current_chat_history_list, chat_history_state: current_chat_history_list}
+
+            # regenerate_btn.click(
+            #     fn=regenerate_fn,
+            #     inputs=[chat_history_state],
+            #     outputs=[chatbot_display, chat_history_state],
+            #     queue=True
+            # )
+            
+            new_chat_btn.click( # Same as clear chat
+                fn=clear_chat_fn,
+                inputs=None,
+                outputs=[chatbot_display, chat_history_state, msg_input],
+                queue=False
+            )
+            
+            demo.css = """
+                .icon-button { min-width: 40px !important; max-width: 40px !important; padding: 0 !important; }
+                .title { margin: 0 !important; padding: 0.5rem 0 !important; }
+                #chatbot { min-height: 70vh !important; max-height: 70vh !important; overflow-y: auto; }
+                .gradio-container { max-width: 1400px !important; margin: 0 auto !important; }
+            """
+        
+        demo.queue(
+            default_concurrency_limit=10, # Increased concurrency
+            max_size=20
+        )
+        
+        demo.launch(
+            server_name="0.0.0.0", # Use 0.0.0.0 to be accessible on network, or 127.0.0.1 for local only
+            server_port=port_to_use,
+            show_error=True,
+            favicon_path="assets/favicon.ico" if os.path.exists("assets/favicon.ico") else None,
+            # prevent_thread_lock=True # Generally good, Gradio handles threading with queue
+        )
+        
+        # Removed manual keep-alive loop as demo.launch() is blocking unless in_thread=True
+        
+    except Exception as e:
+        logger.error(f"Failed to start application: {e}", exc_info=True) # Added exc_info
+        # raise # Re-raise if you want the script to terminate with an error status
+
+if __name__ == "__main__":
+    main()

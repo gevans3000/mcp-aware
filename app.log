@@ -1863,3 +1863,834 @@ openai.BadRequestError: Error code: 400 - {'error': {'message': "Unsupported par
 2025-05-16 14:42:04,454 - __main__ - DEBUG - Received from OpenAI: I excel at performing calculations, solving math problems, and providing precise numerical results. If you have any math-related questions or need assistance with numbers, feel free to ask!
 2025-05-16 14:42:04,454 - __main__ - DEBUG - Generated response: I excel at performing calculations, solving math problems, and providing precise numerical results. If you have any math-related questions or need assistance with numbers, feel free to ask!...
 2025-05-16 14:42:04,455 - matplotlib.pyplot - DEBUG - Loaded backend tkagg version 8.6.
+2025-05-16 14:47:12,536 - matplotlib.pyplot - DEBUG - Loaded backend agg version v2.2.
+2025-05-16 14:47:12,537 - matplotlib.pyplot - DEBUG - Loaded backend tkagg version 8.6.
+2025-05-16 14:47:12,542 - matplotlib.pyplot - DEBUG - Loaded backend agg version v2.2.
+2025-05-16 14:47:12,543 - matplotlib.pyplot - DEBUG - Loaded backend tkagg version 8.6.
+2025-05-16 14:47:12,580 - matplotlib.pyplot - DEBUG - Loaded backend agg version v2.2.
+2025-05-16 14:47:12,583 - __main__ - DEBUG - Processing message: what is the sun?
+2025-05-16 14:47:12,583 - __main__ - DEBUG - Using backend: openai for input: what is the sun?
+2025-05-16 14:47:12,583 - __main__ - DEBUG - Sending to OpenAI: [{'role': 'system', 'content': 'You are a helpful assistant that can perform calculations and answer questions concisely.'}, {'role': 'user', 'content': 'afga'}, {'role': 'assistant', 'content': 'Okay, I am ready to perform calculations and provide exact numerical results.'}, {'role': 'user', 'content': 'and you?'}, {'role': 'assistant', 'content': 'I’m here to help with calculations and provide precise numerical answers. How can I assist you today?'}, {'role': 'user', 'content': 'what are you best at?'}, {'role': 'assistant', 'content': 'I excel at performing calculations, solving math problems, and providing precise numerical results. If you have any math-related questions or need assistance with numbers, feel free to ask!'}, {'role': 'user', 'content': 'what is the sun?'}]
+2025-05-16 14:47:12,588 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/chat/completions', 'files': None, 'json_data': {'messages': [{'role': 'system', 'content': 'You are a helpful assistant that can perform calculations and answer questions concisely.'}, {'role': 'user', 'content': 'afga'}, {'role': 'assistant', 'content': 'Okay, I am ready to perform calculations and provide exact numerical results.'}, {'role': 'user', 'content': 'and you?'}, {'role': 'assistant', 'content': 'I’m here to help with calculations and provide precise numerical answers. How can I assist you today?'}, {'role': 'user', 'content': 'what are you best at?'}, {'role': 'assistant', 'content': 'I excel at performing calculations, solving math problems, and providing precise numerical results. If you have any math-related questions or need assistance with numbers, feel free to ask!'}, {'role': 'user', 'content': 'what is the sun?'}], 'model': 'gpt-4.1-mini-2025-04-14', 'max_tokens': 150, 'temperature': 0.7}}
+2025-05-16 14:47:12,588 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api.openai.com/v1/chat/completions
+2025-05-16 14:47:12,589 - httpcore.connection - DEBUG - close.started
+2025-05-16 14:47:12,589 - httpcore.connection - DEBUG - close.complete
+2025-05-16 14:47:12,590 - httpcore.connection - DEBUG - connect_tcp.started host='api.openai.com' port=443 local_address=None timeout=5.0 socket_options=None
+2025-05-16 14:47:12,667 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002CD2BA601A0>
+2025-05-16 14:47:12,667 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000002CD288BBED0> server_hostname='api.openai.com' timeout=5.0
+2025-05-16 14:47:12,709 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002CD2BA697F0>
+2025-05-16 14:47:12,709 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-05-16 14:47:12,709 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-05-16 14:47:12,709 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-05-16 14:47:12,709 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-05-16 14:47:12,709 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-05-16 14:47:13,932 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Fri, 16 May 2025 18:47:14 GMT'), (b'Content-Type', b'application/json'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'access-control-expose-headers', b'X-Request-ID'), (b'openai-organization', b'user-xilu0sqkeveasxfwmh1ozfxa'), (b'openai-processing-ms', b'1005'), (b'openai-version', b'2020-10-01'), (b'x-envoy-upstream-service-time', b'1011'), (b'x-ratelimit-limit-requests', b'500'), (b'x-ratelimit-limit-tokens', b'200000'), (b'x-ratelimit-remaining-requests', b'499'), (b'x-ratelimit-remaining-tokens', b'199863'), (b'x-ratelimit-reset-requests', b'120ms'), (b'x-ratelimit-reset-tokens', b'40ms'), (b'x-request-id', b'req_bbb52691aa757dae8d510965e753004b'), (b'strict-transport-security', b'max-age=31536000; includeSubDomains; preload'), (b'cf-cache-status', b'DYNAMIC'), (b'X-Content-Type-Options', b'nosniff'), (b'Server', b'cloudflare'), (b'CF-RAY', b'940d0ad178da22e6-ORD'), (b'Content-Encoding', b'br'), (b'alt-svc', b'h3=":443"; ma=86400')])
+2025-05-16 14:47:13,932 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-16 14:47:13,933 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-05-16 14:47:13,936 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-05-16 14:47:13,936 - httpcore.http11 - DEBUG - response_closed.started
+2025-05-16 14:47:13,936 - httpcore.http11 - DEBUG - response_closed.complete
+2025-05-16 14:47:13,937 - openai._base_client - DEBUG - HTTP Response: POST https://api.openai.com/v1/chat/completions "200 OK" Headers({'date': 'Fri, 16 May 2025 18:47:14 GMT', 'content-type': 'application/json', 'transfer-encoding': 'chunked', 'connection': 'keep-alive', 'access-control-expose-headers': 'X-Request-ID', 'openai-organization': 'user-xilu0sqkeveasxfwmh1ozfxa', 'openai-processing-ms': '1005', 'openai-version': '2020-10-01', 'x-envoy-upstream-service-time': '1011', 'x-ratelimit-limit-requests': '500', 'x-ratelimit-limit-tokens': '200000', 'x-ratelimit-remaining-requests': '499', 'x-ratelimit-remaining-tokens': '199863', 'x-ratelimit-reset-requests': '120ms', 'x-ratelimit-reset-tokens': '40ms', 'x-request-id': 'req_bbb52691aa757dae8d510965e753004b', 'strict-transport-security': 'max-age=31536000; includeSubDomains; preload', 'cf-cache-status': 'DYNAMIC', 'x-content-type-options': 'nosniff', 'server': 'cloudflare', 'cf-ray': '940d0ad178da22e6-ORD', 'content-encoding': 'br', 'alt-svc': 'h3=":443"; ma=86400'})
+2025-05-16 14:47:13,937 - openai._base_client - DEBUG - request_id: req_bbb52691aa757dae8d510965e753004b
+2025-05-16 14:47:13,937 - __main__ - DEBUG - Received from OpenAI: The Sun is a star at the center of our solar system. It is a nearly perfect sphere of hot plasma, primarily composed of hydrogen and helium, and it produces energy through nuclear fusion, which powers life on Earth.
+2025-05-16 14:47:13,938 - __main__ - DEBUG - Generated response: The Sun is a star at the center of our solar system. It is a nearly perfect sphere of hot plasma, primarily composed of hydrogen and helium, and it produces energy through nuclear fusion, which powers...
+2025-05-16 14:47:13,938 - matplotlib.pyplot - DEBUG - Loaded backend tkagg version 8.6.
+2025-05-16 14:53:33,655 - __main__ - DEBUG - OpenAI client initialized successfully
+2025-05-16 14:53:34,437 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 14:53:34,437 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 14:53:34,438 - __main__ - INFO - Visit http://0.0.0.0:7861 to chat
+2025-05-16 14:53:34,438 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 14:53:34,439 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:6789
+2025-05-16 14:53:38,528 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001BE3C9F3320>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 14:53:38,529 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 14:53:38,535 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-05-16 14:53:38,569 - __main__ - ERROR - Failed to start application: List.__init__() got an unexpected keyword argument 'container'
+2025-05-16 14:53:38,769 - httpcore.connection - DEBUG - connect_tcp.started host='checkip.amazonaws.com' port=443 local_address=None timeout=3 socket_options=None
+2025-05-16 14:53:38,770 - httpcore.connection - DEBUG - connect_tcp.started host='api.gradio.app' port=443 local_address=None timeout=3 socket_options=None
+2025-05-16 14:53:38,813 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001BE0BF6C1D0>
+2025-05-16 14:53:38,813 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000001BE3C9FF850> server_hostname='checkip.amazonaws.com' timeout=3
+2025-05-16 14:53:38,835 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001BE0BF6C110>
+2025-05-16 14:53:38,836 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'GET']>
+2025-05-16 14:53:38,836 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-05-16 14:53:38,836 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'GET']>
+2025-05-16 14:53:38,837 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-05-16 14:53:38,837 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'GET']>
+2025-05-16 14:53:38,858 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'', [(b'Date', b'Fri, 16 May 2025 18:53:39 GMT'), (b'Content-Type', b'text/plain;charset=UTF-8'), (b'Content-Length', b'13'), (b'Connection', b'keep-alive'), (b'Server', b'nginx'), (b'Vary', b'Origin'), (b'Vary', b'Access-Control-Request-Method'), (b'Vary', b'Access-Control-Request-Headers')])
+2025-05-16 14:53:38,858 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 14:53:38,858 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'GET']>
+2025-05-16 14:53:38,859 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-05-16 14:53:38,859 - httpcore.http11 - DEBUG - response_closed.started
+2025-05-16 14:53:38,859 - httpcore.http11 - DEBUG - response_closed.complete
+2025-05-16 14:53:38,859 - httpcore.connection - DEBUG - close.started
+2025-05-16 14:53:38,859 - httpcore.connection - DEBUG - close.complete
+2025-05-16 14:53:38,860 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-05-16 14:53:38,869 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001BE0BF6C980>
+2025-05-16 14:53:38,869 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000001BE3C9FF350> server_hostname='api.gradio.app' timeout=3
+2025-05-16 14:53:38,940 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/telemetry/gradio/initiated HTTP/11" 200 0
+2025-05-16 14:53:39,062 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001BE3C9715E0>
+2025-05-16 14:53:39,063 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'GET']>
+2025-05-16 14:53:39,063 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-05-16 14:53:39,063 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'GET']>
+2025-05-16 14:53:39,063 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-05-16 14:53:39,063 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'GET']>
+2025-05-16 14:53:39,159 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Fri, 16 May 2025 18:53:39 GMT'), (b'Content-Type', b'application/json'), (b'Content-Length', b'21'), (b'Connection', b'keep-alive'), (b'Server', b'nginx/1.18.0'), (b'Access-Control-Allow-Origin', b'*')])
+2025-05-16 14:53:39,159 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 14:53:39,160 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'GET']>
+2025-05-16 14:53:39,160 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-05-16 14:53:39,160 - httpcore.http11 - DEBUG - response_closed.started
+2025-05-16 14:53:39,160 - httpcore.http11 - DEBUG - response_closed.complete
+2025-05-16 14:53:39,161 - httpcore.connection - DEBUG - close.started
+2025-05-16 14:53:39,161 - httpcore.connection - DEBUG - close.complete
+2025-05-16 14:54:31,848 - __main__ - DEBUG - OpenAI client initialized successfully
+2025-05-16 14:54:32,586 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 14:54:32,586 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 14:54:32,586 - __main__ - INFO - Visit http://0.0.0.0:7861 to chat
+2025-05-16 14:54:32,586 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 14:54:32,587 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:6789
+2025-05-16 14:54:36,670 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000020113E63200>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 14:54:36,670 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 14:54:36,675 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-05-16 14:54:36,712 - __main__ - ERROR - Failed to start application: List.__init__() got an unexpected keyword argument 'container'
+2025-05-16 14:54:36,934 - httpcore.connection - DEBUG - connect_tcp.started host='checkip.amazonaws.com' port=443 local_address=None timeout=3 socket_options=None
+2025-05-16 14:54:36,937 - httpcore.connection - DEBUG - connect_tcp.started host='api.gradio.app' port=443 local_address=None timeout=3 socket_options=None
+2025-05-16 14:54:36,983 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002016333C230>
+2025-05-16 14:54:36,983 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x0000020113E6F750> server_hostname='checkip.amazonaws.com' timeout=3
+2025-05-16 14:54:37,007 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002016333C170>
+2025-05-16 14:54:37,008 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'GET']>
+2025-05-16 14:54:37,008 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-05-16 14:54:37,008 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'GET']>
+2025-05-16 14:54:37,008 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-05-16 14:54:37,008 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'GET']>
+2025-05-16 14:54:37,029 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'', [(b'Date', b'Fri, 16 May 2025 18:54:37 GMT'), (b'Content-Type', b'text/plain;charset=UTF-8'), (b'Content-Length', b'13'), (b'Connection', b'keep-alive'), (b'Server', b'nginx'), (b'Vary', b'Origin'), (b'Vary', b'Access-Control-Request-Method'), (b'Vary', b'Access-Control-Request-Headers')])
+2025-05-16 14:54:37,029 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 14:54:37,029 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'GET']>
+2025-05-16 14:54:37,030 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-05-16 14:54:37,030 - httpcore.http11 - DEBUG - response_closed.started
+2025-05-16 14:54:37,030 - httpcore.http11 - DEBUG - response_closed.complete
+2025-05-16 14:54:37,030 - httpcore.connection - DEBUG - close.started
+2025-05-16 14:54:37,030 - httpcore.connection - DEBUG - close.complete
+2025-05-16 14:54:37,031 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-05-16 14:54:37,051 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002016333C9E0>
+2025-05-16 14:54:37,051 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x0000020113E6F350> server_hostname='api.gradio.app' timeout=3
+2025-05-16 14:54:37,121 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/telemetry/gradio/initiated HTTP/11" 200 0
+2025-05-16 14:54:37,247 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000020113D830E0>
+2025-05-16 14:54:37,247 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'GET']>
+2025-05-16 14:54:37,247 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-05-16 14:54:37,248 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'GET']>
+2025-05-16 14:54:37,248 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-05-16 14:54:37,248 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'GET']>
+2025-05-16 14:54:37,346 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Fri, 16 May 2025 18:54:37 GMT'), (b'Content-Type', b'application/json'), (b'Content-Length', b'21'), (b'Connection', b'keep-alive'), (b'Server', b'nginx/1.18.0'), (b'Access-Control-Allow-Origin', b'*')])
+2025-05-16 14:54:37,347 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 14:54:37,347 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'GET']>
+2025-05-16 14:54:37,347 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-05-16 14:54:37,348 - httpcore.http11 - DEBUG - response_closed.started
+2025-05-16 14:54:37,348 - httpcore.http11 - DEBUG - response_closed.complete
+2025-05-16 14:54:37,348 - httpcore.connection - DEBUG - close.started
+2025-05-16 14:54:37,348 - httpcore.connection - DEBUG - close.complete
+2025-05-16 14:55:26,645 - __main__ - DEBUG - OpenAI client initialized successfully
+2025-05-16 14:55:27,378 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 14:55:27,378 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 14:55:27,378 - __main__ - INFO - Visit http://0.0.0.0:7861 to chat
+2025-05-16 14:55:27,379 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 14:55:27,379 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:6789
+2025-05-16 14:55:31,468 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000026DE01A0E30>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 14:55:31,468 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 14:55:31,473 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-05-16 14:55:31,505 - __main__ - ERROR - Failed to start application: List.__init__() got an unexpected keyword argument 'container'
+2025-05-16 14:55:31,702 - httpcore.connection - DEBUG - connect_tcp.started host='checkip.amazonaws.com' port=443 local_address=None timeout=3 socket_options=None
+2025-05-16 14:55:31,703 - httpcore.connection - DEBUG - connect_tcp.started host='api.gradio.app' port=443 local_address=None timeout=3 socket_options=None
+2025-05-16 14:55:31,744 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000026DAFB5C230>
+2025-05-16 14:55:31,744 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x0000026DE05BF750> server_hostname='checkip.amazonaws.com' timeout=3
+2025-05-16 14:55:31,768 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000026DE065F860>
+2025-05-16 14:55:31,768 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'GET']>
+2025-05-16 14:55:31,768 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-05-16 14:55:31,769 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'GET']>
+2025-05-16 14:55:31,769 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-05-16 14:55:31,769 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'GET']>
+2025-05-16 14:55:31,790 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'', [(b'Date', b'Fri, 16 May 2025 18:55:31 GMT'), (b'Content-Type', b'text/plain;charset=UTF-8'), (b'Content-Length', b'13'), (b'Connection', b'keep-alive'), (b'Server', b'nginx'), (b'Vary', b'Origin'), (b'Vary', b'Access-Control-Request-Method'), (b'Vary', b'Access-Control-Request-Headers')])
+2025-05-16 14:55:31,790 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 14:55:31,790 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'GET']>
+2025-05-16 14:55:31,791 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-05-16 14:55:31,791 - httpcore.http11 - DEBUG - response_closed.started
+2025-05-16 14:55:31,791 - httpcore.http11 - DEBUG - response_closed.complete
+2025-05-16 14:55:31,791 - httpcore.connection - DEBUG - close.started
+2025-05-16 14:55:31,791 - httpcore.connection - DEBUG - close.complete
+2025-05-16 14:55:31,792 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-05-16 14:55:31,800 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000026DAFB5C980>
+2025-05-16 14:55:31,800 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x0000026DE05BF350> server_hostname='api.gradio.app' timeout=3
+2025-05-16 14:55:31,878 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/telemetry/gradio/initiated HTTP/11" 200 0
+2025-05-16 14:55:31,994 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000026DDFEB20F0>
+2025-05-16 14:55:31,995 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'GET']>
+2025-05-16 14:55:31,995 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-05-16 14:55:31,996 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'GET']>
+2025-05-16 14:55:31,996 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-05-16 14:55:31,996 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'GET']>
+2025-05-16 14:55:32,090 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Fri, 16 May 2025 18:55:32 GMT'), (b'Content-Type', b'application/json'), (b'Content-Length', b'21'), (b'Connection', b'keep-alive'), (b'Server', b'nginx/1.18.0'), (b'Access-Control-Allow-Origin', b'*')])
+2025-05-16 14:55:32,090 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 14:55:32,091 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'GET']>
+2025-05-16 14:55:32,091 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-05-16 14:55:32,091 - httpcore.http11 - DEBUG - response_closed.started
+2025-05-16 14:55:32,091 - httpcore.http11 - DEBUG - response_closed.complete
+2025-05-16 14:55:32,091 - httpcore.connection - DEBUG - close.started
+2025-05-16 14:55:32,092 - httpcore.connection - DEBUG - close.complete
+2025-05-16 14:57:21,817 - __main__ - DEBUG - OpenAI client initialized successfully
+2025-05-16 14:57:22,558 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 14:57:22,558 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 14:57:22,558 - __main__ - INFO - Visit http://0.0.0.0:7861 to chat
+2025-05-16 14:57:22,560 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 14:57:22,561 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:6789
+2025-05-16 14:57:26,656 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001CAEA7F30B0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 14:57:26,657 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 14:57:26,664 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-05-16 14:57:26,699 - __main__ - ERROR - Failed to start application: List.__init__() got an unexpected keyword argument 'container'
+2025-05-16 14:57:26,893 - httpcore.connection - DEBUG - connect_tcp.started host='api.gradio.app' port=443 local_address=None timeout=3 socket_options=None
+2025-05-16 14:57:26,896 - httpcore.connection - DEBUG - connect_tcp.started host='checkip.amazonaws.com' port=443 local_address=None timeout=3 socket_options=None
+2025-05-16 14:57:26,949 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001CAB9CDC950>
+2025-05-16 14:57:26,950 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000001CAEA7FF750> server_hostname='checkip.amazonaws.com' timeout=3
+2025-05-16 14:57:26,972 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001CAB9CDC830>
+2025-05-16 14:57:26,973 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'GET']>
+2025-05-16 14:57:26,973 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-05-16 14:57:26,974 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'GET']>
+2025-05-16 14:57:26,974 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-05-16 14:57:26,974 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'GET']>
+2025-05-16 14:57:26,988 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001CAEA776330>
+2025-05-16 14:57:26,988 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000001CAEA7FF450> server_hostname='api.gradio.app' timeout=3
+2025-05-16 14:57:26,996 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'', [(b'Date', b'Fri, 16 May 2025 18:57:27 GMT'), (b'Content-Type', b'text/plain;charset=UTF-8'), (b'Content-Length', b'13'), (b'Connection', b'keep-alive'), (b'Server', b'nginx'), (b'Vary', b'Origin'), (b'Vary', b'Access-Control-Request-Method'), (b'Vary', b'Access-Control-Request-Headers')])
+2025-05-16 14:57:26,996 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 14:57:26,997 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'GET']>
+2025-05-16 14:57:26,997 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-05-16 14:57:26,997 - httpcore.http11 - DEBUG - response_closed.started
+2025-05-16 14:57:26,997 - httpcore.http11 - DEBUG - response_closed.complete
+2025-05-16 14:57:26,998 - httpcore.connection - DEBUG - close.started
+2025-05-16 14:57:26,998 - httpcore.connection - DEBUG - close.complete
+2025-05-16 14:57:26,999 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): huggingface.co:443
+2025-05-16 14:57:27,126 - urllib3.connectionpool - DEBUG - https://huggingface.co:443 "HEAD /api/telemetry/gradio/initiated HTTP/11" 200 0
+2025-05-16 14:57:27,188 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001CAEA865CA0>
+2025-05-16 14:57:27,189 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'GET']>
+2025-05-16 14:57:27,189 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-05-16 14:57:27,189 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'GET']>
+2025-05-16 14:57:27,189 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-05-16 14:57:27,189 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'GET']>
+2025-05-16 14:57:27,286 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Fri, 16 May 2025 18:57:27 GMT'), (b'Content-Type', b'application/json'), (b'Content-Length', b'21'), (b'Connection', b'keep-alive'), (b'Server', b'nginx/1.18.0'), (b'Access-Control-Allow-Origin', b'*')])
+2025-05-16 14:57:27,287 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 14:57:27,287 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'GET']>
+2025-05-16 14:57:27,287 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-05-16 14:57:27,287 - httpcore.http11 - DEBUG - response_closed.started
+2025-05-16 14:57:27,289 - httpcore.http11 - DEBUG - response_closed.complete
+2025-05-16 14:57:27,289 - httpcore.connection - DEBUG - close.started
+2025-05-16 14:57:27,289 - httpcore.connection - DEBUG - close.complete
+2025-05-16 14:59:28,215 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 14:59:28,216 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 14:59:28,216 - __main__ - INFO - Visit http://0.0.0.0:7861 to chat
+2025-05-16 14:59:28,216 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 14:59:32,308 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001B50DB62F30>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 14:59:32,309 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 14:59:32,346 - __main__ - ERROR - Failed to start application: List.__init__() got an unexpected keyword argument 'container'
+2025-05-16 14:59:32,639 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 14:59:32,936 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 15:00:09,877 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 15:00:09,877 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 15:00:09,877 - __main__ - INFO - Visit http://0.0.0.0:7861 to chat
+2025-05-16 15:00:09,877 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 15:00:13,993 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001F294949AC0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 15:00:13,994 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 15:00:14,032 - __main__ - ERROR - Failed to start application: List.__init__() got an unexpected keyword argument 'container'
+2025-05-16 15:00:14,337 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 15:00:14,635 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 15:00:31,215 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 15:00:31,216 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 15:00:31,216 - __main__ - INFO - Visit http://0.0.0.0:7861 to chat
+2025-05-16 15:00:31,216 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 15:00:35,320 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000024D3DF9F350>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 15:00:35,321 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 15:00:35,674 - __main__ - ERROR - Failed to start application: name 'os' is not defined
+2025-05-16 15:00:35,695 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 15:00:35,989 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 15:02:17,234 - __main__ - INFO - ==================================================
+2025-05-16 15:02:17,235 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 15:02:17,235 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 15:02:17,235 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-16 15:02:17,235 - __main__ - INFO - ==================================================
+2025-05-16 15:02:17,235 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 15:02:21,366 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000017261525280>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 15:02:21,366 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 15:02:21,722 - __main__ - ERROR - Failed to start application: name 'os' is not defined
+2025-05-16 15:02:21,742 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 15:02:22,049 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 15:02:33,051 - __main__ - INFO - ==================================================
+2025-05-16 15:02:33,051 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 15:02:33,051 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 15:02:33,052 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-16 15:02:33,052 - __main__ - INFO - ==================================================
+2025-05-16 15:02:33,052 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 15:02:37,139 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001B370417CE0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 15:02:37,139 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 15:02:37,497 - __main__ - ERROR - Failed to start application: name 'os' is not defined
+2025-05-16 15:02:37,563 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 15:02:37,935 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 15:02:49,181 - __main__ - INFO - ==================================================
+2025-05-16 15:02:49,182 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 15:02:49,182 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 15:02:49,182 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-16 15:02:49,182 - __main__ - INFO - ==================================================
+2025-05-16 15:02:49,182 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 15:02:53,282 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000271A2433B00>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 15:02:53,282 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 15:02:53,716 - __main__ - ERROR - Failed to start application: name 'os' is not defined
+2025-05-16 15:02:53,723 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 15:02:54,029 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 15:03:05,200 - __main__ - INFO - ==================================================
+2025-05-16 15:03:05,200 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 15:03:05,201 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 15:03:05,201 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-16 15:03:05,201 - __main__ - INFO - ==================================================
+2025-05-16 15:03:05,201 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 15:03:09,316 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001A85DC5BB60>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 15:03:09,317 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 15:03:09,710 - __main__ - ERROR - Failed to start application: name 'os' is not defined
+2025-05-16 15:03:09,727 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 15:03:10,011 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 15:03:21,184 - __main__ - INFO - ==================================================
+2025-05-16 15:03:21,185 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 15:03:21,185 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 15:03:21,185 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-16 15:03:21,185 - __main__ - INFO - ==================================================
+2025-05-16 15:03:21,185 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 15:03:25,281 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001A8F6457B90>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 15:03:25,282 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 15:03:25,675 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 15:03:25,679 - __main__ - ERROR - Failed to start application: name 'os' is not defined
+2025-05-16 15:03:25,914 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 15:03:37,218 - __main__ - INFO - ==================================================
+2025-05-16 15:03:37,219 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 15:03:37,219 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 15:03:37,219 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-16 15:03:37,219 - __main__ - INFO - ==================================================
+2025-05-16 15:03:37,219 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 15:03:41,331 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001D5486101A0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 15:03:41,331 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 15:03:41,688 - __main__ - ERROR - Failed to start application: name 'os' is not defined
+2025-05-16 15:03:41,716 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 15:03:42,000 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 15:03:53,476 - __main__ - INFO - ==================================================
+2025-05-16 15:03:53,476 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 15:03:53,476 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 15:03:53,477 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-16 15:03:53,477 - __main__ - INFO - ==================================================
+2025-05-16 15:03:53,477 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 15:03:57,573 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000174B2644B00>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 15:03:57,574 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 15:03:57,940 - __main__ - ERROR - Failed to start application: name 'os' is not defined
+2025-05-16 15:03:57,956 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 15:03:58,244 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 15:04:09,524 - __main__ - INFO - ==================================================
+2025-05-16 15:04:09,525 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 15:04:09,525 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 15:04:09,525 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-16 15:04:09,525 - __main__ - INFO - ==================================================
+2025-05-16 15:04:09,525 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 15:04:13,641 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001CDEA057C80>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 15:04:13,642 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 15:04:14,020 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 15:04:14,023 - __main__ - ERROR - Failed to start application: name 'os' is not defined
+2025-05-16 15:04:14,341 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 15:04:25,446 - __main__ - INFO - ==================================================
+2025-05-16 15:04:25,446 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 15:04:25,446 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 15:04:25,446 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-16 15:04:25,448 - __main__ - INFO - ==================================================
+2025-05-16 15:04:25,448 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 15:04:29,554 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000020CA7F12F00>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 15:04:29,554 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 15:04:29,942 - __main__ - ERROR - Failed to start application: name 'os' is not defined
+2025-05-16 15:04:29,961 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 15:04:30,240 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 15:04:41,452 - __main__ - INFO - ==================================================
+2025-05-16 15:04:41,452 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 15:04:41,452 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 15:04:41,453 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-16 15:04:41,453 - __main__ - INFO - ==================================================
+2025-05-16 15:04:41,453 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 15:04:45,553 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000013E18404680>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 15:04:45,553 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 15:04:45,920 - __main__ - ERROR - Failed to start application: name 'os' is not defined
+2025-05-16 15:04:45,939 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 15:04:46,219 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 15:04:57,450 - __main__ - INFO - ==================================================
+2025-05-16 15:04:57,451 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 15:04:57,451 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 15:04:57,451 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-16 15:04:57,451 - __main__ - INFO - ==================================================
+2025-05-16 15:04:57,451 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 15:05:01,572 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001D16AA14BC0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 15:05:01,572 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 15:05:01,944 - __main__ - ERROR - Failed to start application: name 'os' is not defined
+2025-05-16 15:05:01,963 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 15:05:02,256 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 15:05:13,342 - __main__ - INFO - ==================================================
+2025-05-16 15:05:13,342 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 15:05:13,342 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 15:05:13,342 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-16 15:05:13,342 - __main__ - INFO - ==================================================
+2025-05-16 15:05:13,342 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 15:05:17,446 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001B3615A4C20>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 15:05:17,447 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 15:05:17,834 - __main__ - ERROR - Failed to start application: name 'os' is not defined
+2025-05-16 15:05:17,850 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 15:05:18,064 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 15:05:39,436 - __main__ - INFO - ==================================================
+2025-05-16 15:05:39,437 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 15:05:39,437 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 15:05:39,437 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-16 15:05:39,437 - __main__ - INFO - ==================================================
+2025-05-16 15:05:39,437 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 15:05:43,555 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001BF6C94DA00>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 15:05:43,555 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 15:05:43,916 - __main__ - ERROR - Failed to start application: name 'os' is not defined
+2025-05-16 15:05:43,935 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 15:05:44,227 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 15:05:55,385 - __main__ - INFO - ==================================================
+2025-05-16 15:05:55,386 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 15:05:55,386 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 15:05:55,386 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-16 15:05:55,386 - __main__ - INFO - ==================================================
+2025-05-16 15:05:55,386 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 15:05:59,516 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002771F59D7F0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 15:05:59,516 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 15:05:59,892 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 15:05:59,896 - __main__ - ERROR - Failed to start application: name 'os' is not defined
+2025-05-16 15:06:00,208 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 15:06:11,423 - __main__ - INFO - ==================================================
+2025-05-16 15:06:11,424 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 15:06:11,424 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 15:06:11,424 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-16 15:06:11,424 - __main__ - INFO - ==================================================
+2025-05-16 15:06:11,424 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 15:06:15,525 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002128DE9D910>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 15:06:15,525 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 15:06:15,918 - __main__ - ERROR - Failed to start application: name 'os' is not defined
+2025-05-16 15:06:15,933 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 15:06:16,156 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 15:06:27,383 - __main__ - INFO - ==================================================
+2025-05-16 15:06:27,384 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 15:06:27,384 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 15:06:27,384 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-16 15:06:27,384 - __main__ - INFO - ==================================================
+2025-05-16 15:06:27,384 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 15:06:31,504 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002C6B8F7FEC0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 15:06:31,504 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 15:06:31,879 - __main__ - ERROR - Failed to start application: name 'os' is not defined
+2025-05-16 15:06:31,898 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 15:06:32,173 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 15:06:43,444 - __main__ - INFO - ==================================================
+2025-05-16 15:06:43,445 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 15:06:43,445 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 15:06:43,445 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-16 15:06:43,445 - __main__ - INFO - ==================================================
+2025-05-16 15:06:43,446 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 15:06:47,553 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001E54F0217C0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 15:06:47,553 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 15:06:47,927 - __main__ - ERROR - Failed to start application: name 'os' is not defined
+2025-05-16 15:06:47,932 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 15:06:48,234 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 15:06:59,583 - __main__ - INFO - ==================================================
+2025-05-16 15:06:59,583 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 15:06:59,583 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 15:06:59,583 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-16 15:06:59,583 - __main__ - INFO - ==================================================
+2025-05-16 15:06:59,583 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 15:07:03,698 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001F41513E030>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 15:07:03,699 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 15:07:04,063 - __main__ - ERROR - Failed to start application: name 'os' is not defined
+2025-05-16 15:07:04,078 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 15:07:04,384 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 15:07:15,400 - __main__ - INFO - ==================================================
+2025-05-16 15:07:15,401 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 15:07:15,401 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 15:07:15,401 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-16 15:07:15,401 - __main__ - INFO - ==================================================
+2025-05-16 15:07:15,401 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 15:07:19,491 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002050C7431D0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 15:07:19,492 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 15:07:19,864 - __main__ - ERROR - Failed to start application: name 'os' is not defined
+2025-05-16 15:07:19,867 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 15:07:20,166 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 15:07:31,425 - __main__ - INFO - ==================================================
+2025-05-16 15:07:31,426 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 15:07:31,426 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 15:07:31,426 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-16 15:07:31,426 - __main__ - INFO - ==================================================
+2025-05-16 15:07:31,426 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 15:07:35,525 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000242048DA180>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 15:07:35,525 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 15:07:35,896 - __main__ - ERROR - Failed to start application: name 'os' is not defined
+2025-05-16 15:07:35,922 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-16 15:07:36,217 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 15:10:36,017 - __main__ - INFO - ==================================================
+2025-05-16 15:10:36,018 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 15:10:36,018 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 15:10:36,018 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-16 15:10:36,018 - __main__ - INFO - ==================================================
+2025-05-16 15:10:36,019 - __main__ - INFO - Testing connection to MCP server...
+2025-05-16 15:10:40,151 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001BFBBEDF3E0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 15:10:40,151 - __main__ - WARNING - Please make sure server.py is running in another terminal
+2025-05-16 15:10:40,395 - numexpr.utils - INFO - Note: NumExpr detected 20 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+2025-05-16 15:10:40,395 - numexpr.utils - INFO - NumExpr defaulting to 16 threads.
+2025-05-16 15:10:40,813 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 15:10:40,883 - __main__ - ERROR - Failed to start application: name 'os' is not defined
+2025-05-16 15:17:22,410 - __main__ - INFO - ==================================================
+2025-05-16 15:17:22,411 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 15:17:22,411 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 15:17:22,411 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-16 15:17:22,411 - __main__ - INFO - ==================================================
+2025-05-16 15:17:22,411 - __main__ - INFO - Testing connection to MCP server (attempt 1/3)...
+2025-05-16 15:17:26,512 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001AC6A5040B0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 15:17:26,513 - __main__ - WARNING - Retrying in 2 seconds...
+2025-05-16 15:17:28,514 - __main__ - INFO - Testing connection to MCP server (attempt 2/3)...
+2025-05-16 15:17:32,631 - __main__ - WARNING - Could not connect to MCP server: HTTPConnectionPool(host='localhost', port=6789): Max retries exceeded with url: /greeting/Test (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001AC6A5047A0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-16 15:17:32,633 - __main__ - WARNING - Retrying in 4 seconds...
+2025-05-16 15:17:36,634 - __main__ - INFO - Testing connection to MCP server (attempt 3/3)...
+2025-05-16 15:17:40,719 - __main__ - ERROR - Failed to connect to MCP server after 3 attempts
+2025-05-16 15:17:40,719 - __main__ - ERROR - Please make sure server.py is running in another terminal
+2025-05-16 15:17:40,721 - __main__ - ERROR - Command to start server: python server.py --port 6789
+2025-05-16 15:17:44,632 - __main__ - INFO - Exiting...
+2025-05-16 16:24:13,756 - __main__ - INFO - ==================================================
+2025-05-16 16:24:13,757 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 16:24:13,757 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 16:24:13,757 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-16 16:24:13,757 - __main__ - INFO - ==================================================
+2025-05-16 16:24:13,758 - __main__ - INFO - Testing connection to MCP server (attempt 1/3)...
+2025-05-16 16:24:15,830 - __main__ - INFO - Server test successful: 200 - {"result":"Hello, Test! Nice to meet you."}
+2025-05-16 16:24:16,067 - numexpr.utils - INFO - Note: NumExpr detected 20 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+2025-05-16 16:24:16,067 - numexpr.utils - INFO - NumExpr defaulting to 16 threads.
+2025-05-16 16:24:16,412 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 16:24:16,551 - __main__ - ERROR - Failed to start application: module 'gradio' has no attribute 'Variable'
+2025-05-16 16:38:10,936 - __main__ - INFO - ==================================================
+2025-05-16 16:38:10,938 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 16:38:10,938 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 16:38:10,939 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-16 16:38:10,939 - __main__ - INFO - ==================================================
+2025-05-16 16:38:10,940 - __main__ - INFO - Testing connection to MCP server (attempt 1/3)...
+2025-05-16 16:38:13,021 - __main__ - INFO - Server test successful: 200 - {"result":"Hello, Test! Nice to meet you."}
+2025-05-16 16:38:13,251 - numexpr.utils - INFO - Note: NumExpr detected 20 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+2025-05-16 16:38:13,251 - numexpr.utils - INFO - NumExpr defaulting to 16 threads.
+2025-05-16 16:38:13,644 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 16:38:13,705 - __main__ - ERROR - Failed to start application: EventListener._setup.<locals>.event_trigger() got an unexpected keyword argument 'prevent_thread_lock'
+2025-05-16 17:27:02,754 - __main__ - INFO - ==================================================
+2025-05-16 17:27:02,754 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-16 17:27:02,754 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-16 17:27:02,755 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-16 17:27:02,755 - __main__ - INFO - ==================================================
+2025-05-16 17:27:02,755 - __main__ - INFO - Testing connection to MCP server (attempt 1/3)...
+2025-05-16 17:27:04,806 - __main__ - INFO - Server test successful: 200 - {"result":"Hello, Test! Nice to meet you."}
+2025-05-16 17:27:05,050 - numexpr.utils - INFO - Note: NumExpr detected 20 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+2025-05-16 17:27:05,050 - numexpr.utils - INFO - NumExpr defaulting to 16 threads.
+2025-05-16 17:27:05,386 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-16 17:27:05,565 - __main__ - ERROR - Failed to start application: EventListener._setup.<locals>.event_trigger() got an unexpected keyword argument 'prevent_thread_lock'
+2025-05-18 08:30:01,816 - __main__ - WARNING - Google Generative AI package not installed. Install with: pip install google-generativeai
+2025-05-18 08:30:03,860 - __main__ - INFO - ==================================================
+2025-05-18 08:30:03,860 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-18 08:30:03,860 - __main__ - INFO - MCP Server URL: http://localhost:6789
+2025-05-18 08:30:03,860 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-18 08:30:03,860 - __main__ - INFO - ==================================================
+2025-05-18 08:30:03,860 - __main__ - INFO - Testing connection to MCP server (attempt 1/3)...
+2025-05-18 08:30:05,923 - __main__ - INFO - Server test successful: 200 - {"result":"Hello, Test! Nice to meet you."}
+2025-05-18 08:30:06,617 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 08:30:07,632 - httpx - INFO - HTTP Request: GET http://127.0.0.1:7861/gradio_api/startup-events "HTTP/1.1 200 OK"
+2025-05-18 08:30:07,835 - httpx - INFO - HTTP Request: HEAD http://127.0.0.1:7861/ "HTTP/1.1 200 OK"
+2025-05-18 08:34:50,160 - __main__ - INFO - ==================================================
+2025-05-18 08:34:50,161 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-18 08:34:50,161 - __main__ - INFO - MCP Server URL: http://localhost:6790
+2025-05-18 08:34:50,163 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-18 08:34:50,163 - __main__ - INFO - ==================================================
+2025-05-18 08:34:50,164 - __main__ - INFO - Testing connection to MCP server (attempt 1/3)...
+2025-05-18 08:34:52,239 - __main__ - INFO - Server test successful: 200 - {"result":"Hello, Test! Nice to meet you."}
+2025-05-18 08:34:52,858 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 08:34:53,629 - numexpr.utils - INFO - Note: NumExpr detected 20 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+2025-05-18 08:34:53,630 - numexpr.utils - INFO - NumExpr defaulting to 16 threads.
+2025-05-18 08:34:55,217 - httpx - INFO - HTTP Request: GET http://127.0.0.1:7861/gradio_api/startup-events "HTTP/1.1 200 OK"
+2025-05-18 08:34:55,233 - httpx - INFO - HTTP Request: HEAD http://127.0.0.1:7861/ "HTTP/1.1 200 OK"
+2025-05-18 08:35:20,114 - __main__ - INFO - Switched to openai backend
+2025-05-18 08:35:24,106 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-18 08:35:24,409 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-18 08:41:44,737 - __main__ - INFO - ==================================================
+2025-05-18 08:41:44,737 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-18 08:41:44,738 - __main__ - INFO - MCP Server URL: http://localhost:6790
+2025-05-18 08:41:44,738 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-18 08:41:44,738 - __main__ - INFO - ==================================================
+2025-05-18 08:41:44,738 - __main__ - INFO - Testing connection to MCP server (attempt 1/3)...
+2025-05-18 08:41:46,811 - __main__ - INFO - Server test successful: 200 - {"result":"Hello, Test! Nice to meet you."}
+2025-05-18 08:41:47,071 - numexpr.utils - INFO - Note: NumExpr detected 20 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+2025-05-18 08:41:47,071 - numexpr.utils - INFO - NumExpr defaulting to 16 threads.
+2025-05-18 08:41:47,406 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 08:41:48,178 - httpx - INFO - HTTP Request: GET http://127.0.0.1:7861/gradio_api/startup-events "HTTP/1.1 200 OK"
+2025-05-18 08:41:48,217 - httpx - INFO - HTTP Request: HEAD http://127.0.0.1:7861/ "HTTP/1.1 200 OK"
+2025-05-18 08:47:34,925 - __main__ - INFO - ==================================================
+2025-05-18 08:47:34,926 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-18 08:47:34,926 - __main__ - INFO - MCP Server URL: http://localhost:6790
+2025-05-18 08:47:34,927 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-18 08:47:34,927 - __main__ - INFO - ==================================================
+2025-05-18 08:47:34,927 - __main__ - INFO - Testing connection to MCP server (attempt 1/3)...
+2025-05-18 08:47:36,970 - __main__ - INFO - Server test successful: 200 - {"result":"Hello, Test! Nice to meet you."}
+2025-05-18 08:47:37,195 - numexpr.utils - INFO - Note: NumExpr detected 20 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 16.
+2025-05-18 08:47:37,195 - numexpr.utils - INFO - NumExpr defaulting to 16 threads.
+2025-05-18 08:47:37,613 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 08:47:38,064 - httpx - INFO - HTTP Request: GET http://127.0.0.1:7861/gradio_api/startup-events "HTTP/1.1 200 OK"
+2025-05-18 08:47:38,091 - httpx - INFO - HTTP Request: HEAD http://127.0.0.1:7861/ "HTTP/1.1 200 OK"
+2025-05-18 08:48:15,190 - __main__ - INFO - Switched to openai backend
+2025-05-18 08:48:19,740 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-18 08:48:20,170 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-18 08:52:17,550 - __main__ - ERROR - Failed to initialize OpenAI client: Client.__init__() got an unexpected keyword argument 'proxies'
+Traceback (most recent call last):
+  File "C:\Users\lovel\source\repos\gevans3000\MCP Agent Context\mcp_chatbot\app.py", line 57, in <module>
+    openai_client = OpenAI(api_key=OPENAI_API_KEY)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lovel\AppData\Roaming\Python\Python312\site-packages\openai\_client.py", line 112, in __init__
+    super().__init__(
+  File "C:\Users\lovel\AppData\Roaming\Python\Python312\site-packages\openai\_base_client.py", line 793, in __init__
+    self._client = http_client or SyncHttpxClientWrapper(
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Client.__init__() got an unexpected keyword argument 'proxies'
+2025-05-18 08:52:17,551 - __main__ - WARNING - OpenAI functionality will be disabled
+2025-05-18 08:52:20,295 - __main__ - INFO - ==================================================
+2025-05-18 08:52:20,295 - __main__ - INFO - Starting MCP Chatbot...
+2025-05-18 08:52:20,295 - __main__ - INFO - MCP Server URL: http://localhost:6790
+2025-05-18 08:52:20,295 - __main__ - INFO - Web Interface: http://localhost:7861
+2025-05-18 08:52:20,296 - __main__ - INFO - ==================================================
+2025-05-18 08:52:20,296 - __main__ - INFO - Testing connection to MCP server (attempt 1/3)...
+2025-05-18 08:52:22,348 - __main__ - INFO - Server test successful: 200 - {"result":"Hello, Test! Nice to meet you."}
+2025-05-18 08:52:22,380 - __main__ - ERROR - Failed to start application: Chatbot.__init__() got an unexpected keyword argument 'placeholder'
+2025-05-18 08:52:22,682 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-18 08:52:22,963 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 08:52:23,313 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-initiated-analytics/ "HTTP/1.1 200 OK"
+2025-05-18 09:03:42,507 - __main__ - ERROR - Failed to initialize OpenAI client: Client.__init__() got an unexpected keyword argument 'proxies'
+Traceback (most recent call last):
+  File "C:\Users\lovel\source\repos\gevans3000\MCP Agent Context\mcp_chatbot\app.py", line 57, in <module>
+    openai_client = OpenAI(api_key=OPENAI_API_KEY)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lovel\AppData\Roaming\Python\Python312\site-packages\openai\_client.py", line 112, in __init__
+    super().__init__(
+  File "C:\Users\lovel\AppData\Roaming\Python\Python312\site-packages\openai\_base_client.py", line 793, in __init__
+    self._client = http_client or SyncHttpxClientWrapper(
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Client.__init__() got an unexpected keyword argument 'proxies'
+2025-05-18 09:03:42,508 - __main__ - WARNING - OpenAI functionality will be disabled
+2025-05-18 09:03:43,103 - __main__ - ERROR - Failed to start application: name 'load_dotenv' is not defined
+Traceback (most recent call last):
+  File "C:\Users\lovel\source\repos\gevans3000\MCP Agent Context\mcp_chatbot\app.py", line 567, in main
+    load_dotenv()
+    ^^^^^^^^^^^
+NameError: name 'load_dotenv' is not defined
+2025-05-18 09:04:11,107 - __main__ - ERROR - Failed to initialize OpenAI client: Client.__init__() got an unexpected keyword argument 'proxies'
+Traceback (most recent call last):
+  File "C:\Users\lovel\source\repos\gevans3000\MCP Agent Context\mcp_chatbot\app.py", line 58, in <module>
+    openai_client = OpenAI(api_key=OPENAI_API_KEY)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lovel\AppData\Roaming\Python\Python312\site-packages\openai\_client.py", line 112, in __init__
+    super().__init__(
+  File "C:\Users\lovel\AppData\Roaming\Python\Python312\site-packages\openai\_base_client.py", line 793, in __init__
+    self._client = http_client or SyncHttpxClientWrapper(
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Client.__init__() got an unexpected keyword argument 'proxies'
+2025-05-18 09:04:11,108 - __main__ - WARNING - OpenAI functionality will be disabled
+2025-05-18 09:04:11,707 - __main__ - ERROR - Failed to initialize OpenAI client: Client.__init__() got an unexpected keyword argument 'proxies'
+2025-05-18 09:04:11,708 - __main__ - WARNING - OpenAI features will be disabled
+2025-05-18 09:04:11,708 - __main__ - INFO - Gemini client initialized successfully
+2025-05-18 09:04:15,821 - __main__ - WARNING - Could not connect to MCP server at http://localhost:8000: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /health (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001C218ECB650>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-18 09:04:15,854 - __main__ - ERROR - Failed to start application: Chatbot.__init__() got an unexpected keyword argument 'placeholder'
+Traceback (most recent call last):
+  File "C:\Users\lovel\source\repos\gevans3000\MCP Agent Context\mcp_chatbot\app.py", line 617, in main
+    chatbot = gr.Chatbot(
+              ^^^^^^^^^^^
+  File "C:\Users\lovel\AppData\Roaming\Python\Python312\site-packages\gradio\component_meta.py", line 159, in wrapper
+    return fn(self, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+TypeError: Chatbot.__init__() got an unexpected keyword argument 'placeholder'
+2025-05-18 09:04:16,164 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-18 09:04:16,452 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 09:04:16,797 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-initiated-analytics/ "HTTP/1.1 200 OK"
+2025-05-18 09:04:35,338 - __main__ - ERROR - Failed to initialize OpenAI client: Client.__init__() got an unexpected keyword argument 'proxies'
+Traceback (most recent call last):
+  File "C:\Users\lovel\source\repos\gevans3000\MCP Agent Context\mcp_chatbot\app.py", line 58, in <module>
+    openai_client = OpenAI(api_key=OPENAI_API_KEY)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lovel\AppData\Roaming\Python\Python312\site-packages\openai\_client.py", line 112, in __init__
+    super().__init__(
+  File "C:\Users\lovel\AppData\Roaming\Python\Python312\site-packages\openai\_base_client.py", line 793, in __init__
+    self._client = http_client or SyncHttpxClientWrapper(
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Client.__init__() got an unexpected keyword argument 'proxies'
+2025-05-18 09:04:35,339 - __main__ - WARNING - OpenAI functionality will be disabled
+2025-05-18 09:04:36,029 - __main__ - ERROR - Failed to initialize OpenAI client: Client.__init__() got an unexpected keyword argument 'proxies'
+2025-05-18 09:04:36,029 - __main__ - WARNING - OpenAI features will be disabled
+2025-05-18 09:04:36,029 - __main__ - INFO - Gemini client initialized successfully
+2025-05-18 09:04:40,098 - __main__ - WARNING - Could not connect to MCP server at http://localhost:8000: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /health (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001E93E253560>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-18 09:04:40,399 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-18 09:04:40,737 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 09:04:41,083 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-initiated-analytics/ "HTTP/1.1 200 OK"
+2025-05-18 09:04:42,533 - httpx - INFO - HTTP Request: GET http://localhost:7860/startup-events "HTTP/1.1 200 OK"
+2025-05-18 09:04:44,753 - httpx - INFO - HTTP Request: HEAD http://localhost:7860/ "HTTP/1.1 200 OK"
+2025-05-18 09:04:45,449 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-launched-telemetry/ "HTTP/1.1 200 OK"
+2025-05-18 09:07:49,116 - __main__ - ERROR - Failed to initialize OpenAI client: Client.__init__() got an unexpected keyword argument 'proxies'
+Traceback (most recent call last):
+  File "C:\Users\lovel\source\repos\gevans3000\MCP Agent Context\mcp_chatbot\app.py", line 58, in <module>
+    openai_client = OpenAI(api_key=OPENAI_API_KEY)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lovel\AppData\Roaming\Python\Python312\site-packages\openai\_client.py", line 112, in __init__
+    super().__init__(
+  File "C:\Users\lovel\AppData\Roaming\Python\Python312\site-packages\openai\_base_client.py", line 793, in __init__
+    self._client = http_client or SyncHttpxClientWrapper(
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Client.__init__() got an unexpected keyword argument 'proxies'
+2025-05-18 09:07:49,119 - __main__ - WARNING - OpenAI functionality will be disabled
+2025-05-18 09:07:49,748 - __main__ - ERROR - Failed to initialize OpenAI client: Client.__init__() got an unexpected keyword argument 'proxies'
+2025-05-18 09:07:49,748 - __main__ - WARNING - OpenAI features will be disabled
+2025-05-18 09:07:49,748 - __main__ - INFO - Gemini client initialized successfully
+2025-05-18 09:07:53,847 - __main__ - WARNING - Could not connect to MCP server at http://localhost:8000: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /health (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000267AEA23C50>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-18 09:07:54,172 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-18 09:07:54,497 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 09:07:54,812 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-initiated-analytics/ "HTTP/1.1 200 OK"
+2025-05-18 09:07:58,983 - __main__ - ERROR - Failed to start application: Cannot find empty port in range: 7860-7860. You can specify a different port by setting the GRADIO_SERVER_PORT environment variable or passing the `server_port` parameter to `launch()`.
+Traceback (most recent call last):
+  File "C:\Users\lovel\source\repos\gevans3000\MCP Agent Context\mcp_chatbot\app.py", line 709, in main
+    demo.launch(
+  File "C:\Users\lovel\AppData\Roaming\Python\Python312\site-packages\gradio\blocks.py", line 1998, in launch
+    ) = networking.start_server(
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lovel\AppData\Roaming\Python\Python312\site-packages\gradio\networking.py", line 207, in start_server
+    raise OSError(
+OSError: Cannot find empty port in range: 7860-7860. You can specify a different port by setting the GRADIO_SERVER_PORT environment variable or passing the `server_port` parameter to `launch()`.
+2025-05-18 09:13:48,700 - __main__ - ERROR - Failed to initialize OpenAI client: Client.__init__() got an unexpected keyword argument 'proxies'
+Traceback (most recent call last):
+  File "C:\Users\lovel\source\repos\gevans3000\MCP Agent Context\mcp_chatbot\app.py", line 58, in <module>
+    openai_client = OpenAI(api_key=OPENAI_API_KEY)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lovel\AppData\Roaming\Python\Python312\site-packages\openai\_client.py", line 112, in __init__
+    super().__init__(
+  File "C:\Users\lovel\AppData\Roaming\Python\Python312\site-packages\openai\_base_client.py", line 793, in __init__
+    self._client = http_client or SyncHttpxClientWrapper(
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Client.__init__() got an unexpected keyword argument 'proxies'
+2025-05-18 09:13:48,703 - __main__ - WARNING - OpenAI functionality will be disabled
+2025-05-18 09:13:49,659 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-18 09:13:49,948 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 09:13:50,310 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-initiated-analytics/ "HTTP/1.1 200 OK"
+2025-05-18 09:16:04,936 - __main__ - ERROR - Failed to initialize OpenAI client: Client.__init__() got an unexpected keyword argument 'proxies'
+Traceback (most recent call last):
+  File "C:\Users\lovel\source\repos\gevans3000\MCP Agent Context\mcp_chatbot\app.py", line 58, in <module>
+    openai_client = OpenAI(api_key=OPENAI_API_KEY)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lovel\AppData\Roaming\Python\Python312\site-packages\openai\_client.py", line 112, in __init__
+    super().__init__(
+  File "C:\Users\lovel\AppData\Roaming\Python\Python312\site-packages\openai\_base_client.py", line 793, in __init__
+    self._client = http_client or SyncHttpxClientWrapper(
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Client.__init__() got an unexpected keyword argument 'proxies'
+2025-05-18 09:16:04,937 - __main__ - WARNING - OpenAI functionality will be disabled
+2025-05-18 09:16:05,847 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-18 09:16:06,150 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 09:16:06,504 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-initiated-analytics/ "HTTP/1.1 200 OK"
+2025-05-18 09:16:35,356 - __main__ - ERROR - Failed to initialize OpenAI client: 'Session' object has no attribute 'timeout'
+Traceback (most recent call last):
+  File "C:\Users\lovel\source\repos\gevans3000\MCP Agent Context\mcp_chatbot\app.py", line 58, in <module>
+    openai_client = OpenAI(api_key=OPENAI_API_KEY,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lovel\AppData\Roaming\Python\Python312\site-packages\openai\_client.py", line 112, in __init__
+    super().__init__(
+  File "C:\Users\lovel\AppData\Roaming\Python\Python312\site-packages\openai\_base_client.py", line 775, in __init__
+    if http_client and http_client.timeout != HTTPX_DEFAULT_TIMEOUT:
+                       ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'timeout'
+2025-05-18 09:16:35,358 - __main__ - WARNING - OpenAI functionality will be disabled
+2025-05-18 09:16:36,271 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-18 09:16:36,581 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 09:16:36,901 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-initiated-analytics/ "HTTP/1.1 200 OK"
+2025-05-18 09:16:54,808 - __main__ - ERROR - Failed to initialize OpenAI client: Client.__init__() got an unexpected keyword argument 'proxies'
+Traceback (most recent call last):
+  File "C:\Users\lovel\source\repos\gevans3000\MCP Agent Context\mcp_chatbot\app.py", line 59, in <module>
+    openai_client = OpenAI(api_key=OPENAI_API_KEY)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lovel\AppData\Roaming\Python\Python312\site-packages\openai\_client.py", line 112, in __init__
+    super().__init__(
+  File "C:\Users\lovel\AppData\Roaming\Python\Python312\site-packages\openai\_base_client.py", line 793, in __init__
+    self._client = http_client or SyncHttpxClientWrapper(
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Client.__init__() got an unexpected keyword argument 'proxies'
+2025-05-18 09:16:54,809 - __main__ - WARNING - OpenAI functionality will be disabled
+2025-05-18 09:16:55,723 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-18 09:16:56,043 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 09:16:56,349 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-initiated-analytics/ "HTTP/1.1 200 OK"
+2025-05-18 09:18:09,609 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-18 09:18:10,028 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 09:18:10,349 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-initiated-analytics/ "HTTP/1.1 200 OK"
+2025-05-18 09:18:28,340 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-18 09:18:28,656 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 09:18:28,975 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-initiated-analytics/ "HTTP/1.1 200 OK"
+2025-05-18 09:21:11,984 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-18 09:21:12,287 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 09:21:12,730 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-initiated-analytics/ "HTTP/1.1 200 OK"
+2025-05-18 09:22:27,761 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-18 09:22:28,062 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 09:22:28,388 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-initiated-analytics/ "HTTP/1.1 200 OK"
+2025-05-18 09:22:55,883 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-18 09:22:56,217 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 09:22:56,508 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-initiated-analytics/ "HTTP/1.1 200 OK"
+2025-05-18 09:23:12,381 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-18 09:23:12,690 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 09:23:13,023 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-initiated-analytics/ "HTTP/1.1 200 OK"
+2025-05-18 09:23:14,169 - __main__ - INFO - Connected to MCP server at http://localhost:6790
+2025-05-18 09:23:14,783 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 09:23:14,872 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-initiated-analytics/ "HTTP/1.1 200 OK"
+2025-05-18 09:23:16,500 - httpx - INFO - HTTP Request: GET http://localhost:7860/startup-events "HTTP/1.1 200 OK"
+2025-05-18 09:23:18,576 - httpx - INFO - HTTP Request: HEAD http://localhost:7860/ "HTTP/1.1 200 OK"
+2025-05-18 09:23:19,210 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-launched-telemetry/ "HTTP/1.1 200 OK"
+2025-05-18 09:25:48,393 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-18 09:25:48,677 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 09:25:49,047 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-initiated-analytics/ "HTTP/1.1 200 OK"
+2025-05-18 09:25:50,176 - __main__ - INFO - Connected to MCP server at http://localhost:6790
+2025-05-18 09:25:50,787 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 09:25:50,897 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-initiated-analytics/ "HTTP/1.1 200 OK"
+2025-05-18 09:25:55,245 - __main__ - ERROR - Failed to start application: Cannot find empty port in range: 7860-7860. You can specify a different port by setting the GRADIO_SERVER_PORT environment variable or passing the `server_port` parameter to `launch()`.
+Traceback (most recent call last):
+  File "C:\Users\lovel\source\repos\gevans3000\MCP Agent Context\mcp_chatbot\app.py", line 800, in main
+    demo.launch(
+  File "C:\Users\lovel\AppData\Roaming\Python\Python312\site-packages\gradio\blocks.py", line 1998, in launch
+    ) = networking.start_server(
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lovel\AppData\Roaming\Python\Python312\site-packages\gradio\networking.py", line 207, in start_server
+    raise OSError(
+OSError: Cannot find empty port in range: 7860-7860. You can specify a different port by setting the GRADIO_SERVER_PORT environment variable or passing the `server_port` parameter to `launch()`.
+2025-05-18 09:26:09,679 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-18 09:26:09,980 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 09:26:10,315 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-initiated-analytics/ "HTTP/1.1 200 OK"
+2025-05-18 09:26:13,547 - __main__ - WARNING - Could not connect to MCP server at http://localhost:6790: HTTPConnectionPool(host='localhost', port=6790): Max retries exceeded with url: /tool/add?a=2&b=3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000028C4DE9D580>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-18 09:26:14,169 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 09:26:14,269 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-initiated-analytics/ "HTTP/1.1 200 OK"
+2025-05-18 09:26:15,898 - httpx - INFO - HTTP Request: GET http://localhost:7860/startup-events "HTTP/1.1 200 OK"
+2025-05-18 09:26:17,959 - httpx - INFO - HTTP Request: HEAD http://localhost:7860/ "HTTP/1.1 200 OK"
+2025-05-18 09:26:18,640 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-launched-telemetry/ "HTTP/1.1 200 OK"
+2025-05-18 09:29:16,332 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-18 09:29:16,625 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 09:29:16,988 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-initiated-analytics/ "HTTP/1.1 200 OK"
+2025-05-18 09:29:20,149 - __main__ - WARNING - Could not connect to MCP server at http://localhost:6790: HTTPConnectionPool(host='localhost', port=6790): Max retries exceeded with url: /tool/add?a=2&b=3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000025D4A470E60>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-18 09:29:20,727 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 09:29:20,841 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-initiated-analytics/ "HTTP/1.1 200 OK"
+2025-05-18 09:29:25,215 - __main__ - ERROR - Failed to start application: Cannot find empty port in range: 7860-7860. You can specify a different port by setting the GRADIO_SERVER_PORT environment variable or passing the `server_port` parameter to `launch()`.
+Traceback (most recent call last):
+  File "C:\Users\lovel\source\repos\gevans3000\MCP Agent Context\mcp_chatbot\app.py", line 827, in main
+    demo.launch(
+  File "C:\Users\lovel\AppData\Roaming\Python\Python312\site-packages\gradio\blocks.py", line 1998, in launch
+    ) = networking.start_server(
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lovel\AppData\Roaming\Python\Python312\site-packages\gradio\networking.py", line 207, in start_server
+    raise OSError(
+OSError: Cannot find empty port in range: 7860-7860. You can specify a different port by setting the GRADIO_SERVER_PORT environment variable or passing the `server_port` parameter to `launch()`.
+2025-05-18 09:29:33,006 - httpx - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-05-18 09:29:33,327 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 09:29:33,646 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-initiated-analytics/ "HTTP/1.1 200 OK"
+2025-05-18 09:29:36,866 - __main__ - WARNING - Could not connect to MCP server at http://localhost:6790: HTTPConnectionPool(host='localhost', port=6790): Max retries exceeded with url: /tool/add?a=2&b=3 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000179F8F43530>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-05-18 09:29:37,491 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-05-18 09:29:37,566 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-initiated-analytics/ "HTTP/1.1 200 OK"
+2025-05-18 09:29:39,253 - httpx - INFO - HTTP Request: GET http://localhost:7860/startup-events "HTTP/1.1 200 OK"
+2025-05-18 09:29:41,310 - httpx - INFO - HTTP Request: HEAD http://localhost:7860/ "HTTP/1.1 200 OK"
+2025-05-18 09:29:41,959 - httpx - INFO - HTTP Request: POST https://api.gradio.app/gradio-launched-telemetry/ "HTTP/1.1 200 OK"

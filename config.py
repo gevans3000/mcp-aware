@@ -14,7 +14,7 @@ DEBUG = os.getenv("DEBUG", "false").lower() == "true"
 # Server configuration
 SERVER_HOST = os.getenv("SERVER_HOST", "0.0.0.0")
 SERVER_PORT = int(os.getenv("SERVER_PORT", "7861"))
-MCP_SERVER_URL = os.getenv("MCP_SERVER_URL", "http://localhost:6789")
+MCP_SERVER_URL = os.getenv("MCP_SERVER_URL", "http://localhost:6790")
 MCP_ADD_ENDPOINT = f"{MCP_SERVER_URL}/tool/add"
 MCP_GREETING_ENDPOINT = f"{MCP_SERVER_URL}/greeting/Test"
 
